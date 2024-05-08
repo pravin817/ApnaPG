@@ -1,27 +1,37 @@
 export const faqOptionsList = [
   {
     id: 1,
-    head: "Is my place right for ApnaPG?",
-    desc: "ApnaPG guests are interested in all kinds of places.We have listings for tiny homes, cabins, treehouses, and more.Even a spare room can be a great place to stay.",
+    head: "1.	Is this accommodation suitable for students or graduates/bachelors?",
+    desc: "Absolutely, this accommodation caters well to the needs of students, graduates and bachelors, providing a comfortable living space suitable for independent living.",
   },
   {
     id: 2,
-    head: "Do I have to host all the time?",
-    desc: "Not at all—you control your calendar. You can host once a year, a few nights a month, or more often.",
+    head: "2.	Is it providing daily necessary facilities?",
+    desc: "Yes, this accommodation ensures the provision of daily necessities to facilitate convenience and comfort for residents.",
   },
   {
     id: 3,
-    head: "How much should I interact with guests?",
-    desc: "It’s up to you.Some Hosts prefer to message guests only at key moments—like sending a short note when they check in—while others also enjoy meeting their guests in person.You’ll find a style that works for you and your guests.",
+    head: "3.	Is it affordable for students and bachelors?",
+    desc: "Yes, this accommodation offers competitive pricing tailored to the budgetary constraints of students and bachelors, ensuring affordability without compromising quality.",
   },
   {
     id: 4,
-    head: "Any tips on being a great ApnaPG Host?",
-    desc: "Getting the basics down goes a long way.Keep your place clean, respond to guests promptly, and provide necessary amenities, like fresh towels.Some Hosts like adding a personal touch, such as putting out fresh flowers or sharing a list of local places to explore—but it’s not required.",
+    head: "4.	Is this place reachable?",
+    desc: "Certainly, this accommodation boasts convenient accessibility, with nearby transportation options and amenities easily reachable for residents.",
   },
   {
     id: 5,
-    head: "What are ApnaPG’s fees?",
-    desc: "ApnaPG typically collects a flat service fee of 3% of the reservation subtotal when you get paid.We also collect a fee from guests when they book.In many areas, ApnaPG collects and pays sales and tourism taxes automatically on your behalf as well.",
+    head: "5 Is the place secured?",
+    desc: "Certainly, this accommodation prioritizes safety and security, implementing measures such as surveillance systems, secure access points, and possibly on-site staff to ensure the well-being of residents.",
   },
+  // {
+  //   id: 6,
+  //   head: "6. Do communal spaces exist for socializing?",
+  //   desc: "Yes, our accommodation features communal areas conducive to socializing and collaboration among students and bachelors. ",
+  // },
+  // {
+  //   id: 7,
+  //   head: "7.	Are flexible leasing options available for students?",
+  //   desc: "Additionally, we offer flexible leasing terms tailored to accommodate varying academic schedules and living arrangements.",
+  // },
 ];
