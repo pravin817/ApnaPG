@@ -102,11 +102,12 @@ const ListingTable = () => {
                       </td>
                       {/* location */}
                       <td className=" px-2 py-4 w-[200px]">
-                        {listing?.location?.addressLineOne ||
-                          listing?.location?.addressLineTwo ||
-                          listing?.location?.city ||
-                          listing?.location?.state?.name ||
-                          listing?.location?.country?.name}
+                        {listing?.location?.addressLineOne
+                          ? listing?.location?.addressLineOne
+                          : listing?.location?.addressLineTwo
+                          ? listing?.location?.addressLineTwo
+                          : listing?.location?.city &&
+                            listing?.location?.country?.name}
                       </td>
                       {/* created at */}
                       <td className=" px-6 py-4 max-w-[10px]">
