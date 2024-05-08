@@ -14,21 +14,23 @@ const RoomListingGuide = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <SetupCard
-          heading={"One-to-one guidance from a Superhost"}
+          heading={
+            "Superhost Guided Accommodation Solutions for Students and Bachelors"
+          }
           subHeading={
-            "We’ll match you with a Superhost in your area, who’ll guide you from your first question to your first guest—by phone, video call, or chat."
+            "Receive tailored support from finding the right space to settling in, ensuring a smooth transition into your new living arrangement."
           }
         />
         <SetupCard
-          heading={"An experienced guest for your first booking"}
+          heading={"Welcoming Experienced Guests for Your First Booking"}
           subHeading={
-            "For your first booking, you can choose to welcome an experienced guest who has at least three stays and a good track record on ApnaPG."
+            "Opt for a seasoned guest for your debut booking, boasting at least three stays and a stellar ApnaPG track record. Host with confidence, ensuring a seamless experience for your first venture into hospitality."
           }
         />
         <SetupCard
-          heading={"Specialized support from ApnaPG"}
+          heading={"Tailored Assistance from ApnaPG for New Hosts"}
           subHeading={
-            "New Hosts get one-tap access to specially trained Community Support agents who can help with everything from account issues to billing support."
+            "New hosts receive streamlined access to dedicated Community Support agents, ready to assist with account queries, billing issues, and more with just one tap. Benefit from specialized guidance, ensuring a seamless start to your hosting journey."
           }
         />
       </div>

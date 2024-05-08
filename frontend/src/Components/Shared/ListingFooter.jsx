@@ -140,7 +140,7 @@ const ListingFooter = () => {
         // get the room highlight data
         const highlightData = {
           ///////////////////////////////////////////////// BIG BIGWarning /////////////////////////////////////////////////////
-          highlight: createRoomData?.newRoom?.description,
+          highlight: createRoomData?.newRoom?.highlight,
           roomId: currentListingRoomId,
         };
 

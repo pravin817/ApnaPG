@@ -8,6 +8,7 @@ import { API } from "../../../backend";
 import googleIcon from "../../../assets/BasicIcon/googleIcon.svg";
 import facebookIcon from "../../../assets/BasicIcon/facebookIcon.svg";
 import { PulseLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const WelcomePopUp = ({
   setDefaultPopup,
@@ -30,6 +31,17 @@ const WelcomePopUp = ({
 
   // Check if the user exists
   const handleCheckEmail = async (data) => {
+    if (!data.email) {
+      toast.error("Please provide the email address");
+      return;
+    }
+
+    if (!isValidEmail(data.email)) {
+      // Handle case where email format is invalid
+      console.log("Invalid email format");
+      toast.error("Invalid email format");
+      return;
+    }
     console.log(data);
     console.log("The Authentications :", data.email);
 
@@ -69,6 +81,11 @@ const WelcomePopUp = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Helper function to check email format validity
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const handleFacebookLogin = () => {

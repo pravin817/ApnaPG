@@ -39,7 +39,42 @@ const CreateUserPopup = ({
     setPasswordVisible(!passwordVisible);
   };
 
+  // calculate the age of the user
+  const calculateAge = (birthdate) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   const handleCreateUser = async (data) => {
+    // check the age of the user
+    const age = calculateAge(data.birthDate);
+
+    console.log("The age is : ", age);
+
+    if (age < 0) {
+      toast.error("Please enter a valid birthdate | Not in future.");
+      return;
+    }
+
+    if (age < 18) {
+      toast.error("You must be at least 18 years old to sign up.");
+      return;
+    }
+
+    // check the mobile number
+    const mobileNumber = data.mobileno.toString();
+
+    if (mobileNumber.length !== 10) {
+      toast.error("Please enter a 10 digit valid mobile number.");
+      return;
+    }
+
     console.log(data);
     let user = {
       name: {
@@ -56,8 +91,6 @@ const CreateUserPopup = ({
       const response = await axios.post(`${API}auth/sign-up`, user, {
         headers: { "Content-Type": "application/json" },
       });
-
-      console.log(response);
 
       const responseData = response?.data;
       dispatch(userSignUp(responseData));

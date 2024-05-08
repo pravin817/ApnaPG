@@ -10,6 +10,9 @@ import {
   MdOutlinePool,
   MdDinnerDining,
 } from "react-icons/md";
+import { PiFanLight } from "react-icons/pi";
+import { MdTableRestaurant } from "react-icons/md";
+import { LiaChairSolid } from "react-icons/lia";
 import { GiLift } from "react-icons/gi";
 import { TbSunElectricity } from "react-icons/tb";
 import { BiSolidWasher, BiSolidFirstAid } from "react-icons/bi";
@@ -144,6 +147,36 @@ const ListingRoomStepTwoAmenities = () => {
           svgSize={svgSize}
           ptagStyle={amenitesPtagClass}
         />
+
+        <StructureCard
+          style={amenitisCardStyle}
+          Img={MdTableRestaurant}
+          name={"Study Table"}
+          onClick={handleStoreCardData}
+          storedCardData={storedCardData}
+          svgSize={svgSize}
+          ptagStyle={amenitesPtagClass}
+        />
+
+        <StructureCard
+          style={amenitisCardStyle}
+          Img={PiFanLight}
+          name={"Fan"}
+          onClick={handleStoreCardData}
+          storedCardData={storedCardData}
+          svgSize={svgSize}
+          ptagStyle={amenitesPtagClass}
+        />
+
+        <StructureCard
+          style={amenitisCardStyle}
+          Img={LiaChairSolid}
+          name={"Chair"}
+          onClick={handleStoreCardData}
+          storedCardData={storedCardData}
+          svgSize={svgSize}
+          ptagStyle={amenitesPtagClass}
+        />
       </div>
 
       {/* 2nd section */}
@@ -179,7 +212,7 @@ const ListingRoomStepTwoAmenities = () => {
             svgSize={svgSize}
             ptagStyle={amenitesPtagClass}
           />
-          <StructureCard
+          {/* <StructureCard
             style={amenitisCardStyle}
             Img={MdDinnerDining}
             name={"Outdoor dining area"}
@@ -187,8 +220,8 @@ const ListingRoomStepTwoAmenities = () => {
             storedCardData={storedCardData}
             svgSize={svgSize}
             ptagStyle={amenitesPtagClass}
-          />
-          <StructureCard
+          /> */}
+          {/* <StructureCard
             style={amenitisCardStyle}
             Img={CgPiano}
             name={"Music System"}
@@ -196,7 +229,7 @@ const ListingRoomStepTwoAmenities = () => {
             storedCardData={storedCardData}
             svgSize={svgSize}
             ptagStyle={amenitesPtagClass}
-          />
+          /> */}
           <StructureCard
             style={amenitisCardStyle}
             Img={CiDumbbell}

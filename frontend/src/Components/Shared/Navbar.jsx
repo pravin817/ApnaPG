@@ -8,7 +8,6 @@ import {
 } from "../../redux/actions/userActions";
 
 // Import the icons
-
 import searchIcon from "../../assets/BasicIcon/Search.svg";
 import hamburgerMenu from "../../assets/BasicIcon/HamburgerMenu.svg";
 import userProfile from "../../assets/BasicIcon/UserProfile.png";
@@ -95,7 +94,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      console.log("scrollPosition : ", scrollPosition);
+      // console.log("scrollPosition : ", scrollPosition);
       if (scrollPosition > 10) {
         setShowExtendedSearch(false);
       } else {
@@ -175,7 +174,7 @@ const Navbar = () => {
                       </>
                     ) : (
                       <>
-                        {/* <div
+                        <div
                           className="w-[75%] mx-auto cursor-pointer"
                           onClick={() => {
                             setHideSmallSearch((prev) => !prev);
@@ -203,14 +202,14 @@ const Navbar = () => {
                               />
                             </button>
                           </div>
-                        </div> */}
+                        </div>
                       </>
                     )}
                   </div>
                 </div>
 
                 {/* The extended search bar  */}
-                {/* {(showExtendedSearch || hideSmallSearch) && (
+                {(showExtendedSearch || hideSmallSearch) && (
                   <div className="mt-10">
                     <div className="w-5/4 mx-auto">
                       <div className="flex items-center justify-between border-[1px] border-[#dddddd] rounded-full px-3 py-1 shadow hover:shadow-md transition-all cursor-pointer">
@@ -247,7 +246,7 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-                )} */}
+                )}
               </div>
             )}
           </>
