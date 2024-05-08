@@ -20,19 +20,43 @@ const signup = async (req, res) => {
     console.log(payload);
 
     if (!payload.name) {
-      throw new Error("please provide the user name");
+      return res.status(400).json({
+        message: "Please provide the name",
+        success: false,
+      });
     }
 
     if (!payload.emailId) {
-      throw new Error("please provide the email");
+      return res.status(400).json({
+        message: "Please provide the email address",
+        success: false,
+      });
     }
 
     if (!payload.mobileNo) {
-      throw new Error("please provide the mobile number");
+      return res.status(400).json({
+        message: "Please provide the mobile number",
+        success: false,
+      });
     }
 
     if (!payload.birthDate) {
-      throw new Error("please provide the birth date");
+      return res.status(400).json({
+        message: "Please provide the birth date",
+        success: false,
+      });
+    }
+
+    // check if the mobile number is registered on the platform or not
+    const userByMobileNumber = await User.findOne({
+      mobileNo: payload.mobileNo,
+    });
+
+    if (userByMobileNumber) {
+      return res.status(404).json({
+        message: "Mobile number already exist",
+        success: false,
+      });
     }
 
     // Hashed the password before storing to the database
@@ -56,15 +80,6 @@ const signup = async (req, res) => {
     };
 
     const userDetails = await User.find(findCriteria);
-
-    const userByMobileNumber = await User.findOne(payload.mobileNo);
-
-    if (userByMobileNumber) {
-      return res.status(404).json({
-        message: "Mobile number already exist",
-        success: false,
-      });
-    }
 
     const accessToken = jwt.sign(
       {
@@ -413,7 +428,8 @@ const generateOtpCodeForMobile = async (req, res) => {
       ? `Mobile number updated , otp send on the ${mobileNo} mobile number`
       : `OTP code send successfully on ${mobileNo} mobile number`;
 
-    await sendSMS(mobileNo, `Your OTP code is ${otpCode}`);
+    let mobileNumber = "+91" + mobileNo;
+    await sendSMS(mobileNumber, `Your OTP code is ${otpCode}`);
     res.status(200).json({
       message: msg,
       success: true,
