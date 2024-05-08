@@ -1,0 +1,158 @@
+/* Added Google font  */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* CSS Reset  */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  font-family: "poppins", sans-serif;
+}
+
+p {
+  color: #222222;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* The css for the Map */
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-pane,
+.leaflet-top {
+  z-index: 0 !important;
+}
+
+.screen-lock {
+  overflow: hidden;
+}
+
+/* Navbar CSS  */
+.nav-search-button>p {
+  padding-inline: 12px;
+  font-size: 14px;
+}
+
+.nav-search-button>p:nth-child(-n + 2) {
+  border-right: 1.5px solid #dddddd;
+  font-weight: 500;
+  color: #222222;
+}
+
+/* User menu  */
+.user-menu>a {
+  padding: 10px 16px;
+  width: 100%;
+  font-size: 14px;
+  color: #222222;
+  opacity: 0.9;
+}
+
+.user-menu>a:hover {
+  background-color: #f3f3f3;
+  transition: all 0.2s ease-in;
+}
+
+input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+  accent-color: #222222;
+}
+
+/* popup Sign in and sign up css  */
+.placeholder-shrink {
+  transform: translate(4px, 0) scale(1);
+  transition: transform 0.3s;
+}
+
+.placeholder-restore {
+  transform: translate(0, 0) scale(1);
+  transition: transform 0.3s;
+}
+
+.popup-overlay {
+  background-color: rgba(0, 0, 0, 0.36);
+  opacity: 0;
+  animation: fadeIn 0.4s forwards;
+}
+
+.popup-container {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.popup-container-login {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: loginSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.profile-container {
+  flex: 0 0 350px;
+}
+
+.profile-container-div {
+  flex: 0 0 auto;
+}
+
+/* Animations goes Here  */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    top: 13vh;
+    opacity: 0;
+  }
+
+  100% {
+    top: 10vh;
+    opacity: 1;
+  }
+}
+
+@keyframes loginSlideIn {
+  0% {
+    top: 13vh;
+    opacity: 1;
+  }
+
+  100% {
+    top: 10vh;
+    opacity: 1;
+  }
+}
+
+/* edit profile CSS  */
+.profile-popup-container {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  animation: profileSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes profileSlideIn {
+  0% {
+    top: 35vh;
+    opacity: 003;
+  }
+
+  100% {
+    top: 19vh;
+    opacity: 1;
+  }
+}
