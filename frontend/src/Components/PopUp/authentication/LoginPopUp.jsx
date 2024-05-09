@@ -86,7 +86,7 @@ const LoginPopUp = ({
     } catch (error) {
       setIsLoading(false);
       console.log("Error while login the user", error);
-      toast.error("Network error, please try again later!");
+      toast.error("Invalid email or password, please try again later!");
     } finally {
       setIsLoading(false);
     }
