@@ -1,8 +1,8 @@
 import SetupCard from "./SetupCard";
 
-import apartment1 from "../../assets/apartments1.png";
-import apartment2 from "../../assets/apartments2.png";
-import apartment3 from "../../assets/apartments3.png";
+import apartment1 from "../../assets/apartments1.jpg";
+import apartment2 from "../../assets/apartments2.jpg";
+import apartment3 from "../../assets/apartments3.jpg";
 
 const Apartments = () => {
   return (

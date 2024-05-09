@@ -24,13 +24,13 @@ const RoomListingGuide = () => {
         <SetupCard
           heading={"Welcoming Experienced Guests for Your First Booking"}
           subHeading={
-            "Opt for a seasoned guest for your debut booking, boasting at least three stays and a stellar ApnaPG track record. Host with confidence, ensuring a seamless experience for your first venture into hospitality."
+            "Opt for a seasoned guest for your debut booking, boasting at least three stays and a stellar ApnaPG track record."
           }
         />
         <SetupCard
           heading={"Tailored Assistance from ApnaPG for New Hosts"}
           subHeading={
-            "New hosts receive streamlined access to dedicated Community Support agents, ready to assist with account queries, billing issues, and more with just one tap. Benefit from specialized guidance, ensuring a seamless start to your hosting journey."
+            "New hosts receive streamlined access to dedicated Community Support agents, ready to assist with account queries, billing issues, and more with just one tap."
           }
         />
       </div>

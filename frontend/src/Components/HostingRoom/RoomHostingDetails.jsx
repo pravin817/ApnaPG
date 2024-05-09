@@ -18,8 +18,8 @@ const RoomHostingDetails = () => {
     <div className=" flex flex-col gap-3 md:gap-5 md:mx-6">
       {/* Add the Heading  */}
       <div className=" flex flex-col gap-2 text-[#222222] font-medium text-2xl md:text-5xl text-center">
-        <h1 className=" text-[#ff385c]">Rent It</h1>
-        <h1>You could earn</h1>
+        <h1 className=" text-[#003B95] font-bold">Lease It</h1>
+        <h1>You could earn.</h1>
       </div>
       {/* Add the amount  */}
       <p className=" flex items-center justify-center text-center text-[#222222] font-semibold text-3xl my-2 md:text-7xl md:my-4">

@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { FaSearch } from "react-icons/fa";
+import { FaHouseDamage } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -111,12 +113,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`border-b-[1.4px] border-[#f1f1f1] sticky top-0 z-[99] bg-white ${
+      className={`border-b-[1.4px] border-[#003B95] sticky top-0 z-[99]  bg-[#003B95] ${
         inBookingPage && "hidden md:block"
       }`}
     >
       <div
-        className={`xl:px-10 py-5 xl:mx-auto items-start px-5 relative ${
+        className={`xl:px-10 py-5 xl:mx-auto items-center px-5 relative ${
           inUserProfile ||
           inUserDashboard ||
           inHostRoomsLandingPage ||
@@ -136,13 +138,14 @@ const Navbar = () => {
         <div className="md:w-[160px]">
           <span className="flex flex-row gap-2 items-center max-w-[120px]">
             <Link
-              className="text-xl text-[#ff385c] font-bold"
+              className="text-xl text-white font-bold"
               onClick={() => {
                 JSON.stringify(localStorage.setItem("category", "House"));
               }}
               to={"/"}
             >
-              Apna<span className="text-black">PG</span>
+              {/* Apna<span className="text-black">PG</span> */}
+              ApnaPG
             </Link>
           </span>
         </div>
@@ -175,17 +178,17 @@ const Navbar = () => {
                     ) : (
                       <>
                         <div
-                          className="w-[75%] mx-auto cursor-pointer"
+                          className="w-[100%] mx-auto cursor-pointer"
                           onClick={() => {
                             setHideSmallSearch((prev) => !prev);
                           }}
                         >
-                          <div className="flex items-center justify-between border-[1px] border-[#dddddd] rounded-full px-3 py-2 shadow hover:shadow-md transition-all cursor-pointer">
+                          <div className="flex items-center justify-between border-[1px] border-[#dddddd] bg-white rounded-lg px-3 py-2 shadow hover:shadow-md transition-all cursor-pointer">
                             <p className="text-sm">
                               <span className="font-semibold px-2">
                                 Anywhere
                               </span>{" "}
-                              <span className="text-gray-400"> | </span>{" "}
+                              <span className="text-white"> | </span>{" "}
                               <span className="font-semibold px-2">
                                 Any week
                               </span>{" "}
@@ -194,13 +197,16 @@ const Navbar = () => {
                                 Add guests
                               </span>{" "}
                             </p>
-                            <button className="bg-[#ff385c] rounded-full p-1">
-                              <img
-                                src={searchIcon}
-                                alt="Search"
-                                className="w-5  "
-                              />
-                            </button>
+                            {/* <button className=" rounded-full  bordeinline-block p-1">
+                                <img
+                                  src={searchIcon}
+                                  alt="Search"
+                                  className="w-5 text-black"
+                                />
+                            </button> */}
+                            <div className="borderinline-block p-1">
+                              <FaSearch className="w-5 text-black" />
+                            </div>
                           </div>
                         </div>
                       </>
@@ -260,15 +266,16 @@ const Navbar = () => {
             {/* If the user in the host Room landing page then show the different options  */}
             {inHostRoomsLandingPage ? (
               <div className=" flex flex-row items-center justify-between gap-4">
-                <p className=" text-[#222222] text-sm font-medium hidden sm:block">
+                <p className=" text-white text-sm font-medium hidden sm:block">
                   Ready to Host it?
                 </p>
                 <Link
                   to="/become-a-host"
-                  className=" flex flex-row justify-between items-center gap-2 bg-[#ff385c] hover:bg-[#d90b63] transition-all duration-300 px-3 py-2 rounded-lg"
+                  className=" flex flex-row justify-between items-center gap-2 bg-white hover:bg-white transition-all duration-300 px-3 py-2 rounded-lg"
                 >
-                  <img src={house} alt="House setup" className=" w-4 md:w-5" />
-                  <p className=" font-semibold text-sm md:text-base text-white">
+                  {/* <img src={house} alt="House setup" className=" w-4 md:w-5" /> */}
+                  <FaHouseDamage />
+                  <p className=" font-semibold text-sm md:text-bas">
                     ApnaPG setup
                   </p>
                 </Link>
@@ -280,7 +287,7 @@ const Navbar = () => {
                   {!inUserDashboard && (
                     <Link
                       to="/host/rooms"
-                      className=" bg-[#ffffff] hover:bg-[#f0f0f0] transition-all rounded-full p-3 cursor-pointer mr-3 md:block hidden"
+                      className=" bg-[#ffffff] hover:bg-[#f0f0f0] transition-all rounded-full p-2 cursor-pointer mr-3 md:block hidden"
                     >
                       <p className="text-sm font-medium text-[#222222]">
                         Host your room
@@ -289,7 +296,7 @@ const Navbar = () => {
                   )}
 
                   <div
-                    className="border-[1px] border-[#dddddd] rounded-full py-1 px-2 flex flex-row gap-3 hover:shadow-md transition-all cursor-pointer relative"
+                    className="border-[1px] bg-white border-[#dddddd] rounded-full py-1 px-2 flex flex-row gap-3 hover:shadow-md transition-all cursor-pointer relative"
                     onClick={() => {
                       setShowUserMenu((preValue) => !preValue);
                     }}

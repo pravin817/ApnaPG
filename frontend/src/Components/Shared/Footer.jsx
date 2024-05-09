@@ -3,57 +3,57 @@ import facebookIcon from "../../assets/BasicIcon/facebookIcon.svg";
 
 const Footer = () => {
   return (
-    <footer className=" py-12 bg-[#f7f7f7] border-t border-[#dddddd] text-sm text-[#222222] relative bottom-0 z-[20]">
-      <section className=" grid grid-cols-2 md:grid-cols-4 gap-8 justify-between max-w-screen-2xl mx-auto px-10">
-        <div className="flex flex-col gap-4 opacity-80">
-          <h6 className="font-semibold">Support</h6>
-          <p>Help Center</p>
-          <p>Get help with a safety issue</p>
-          <p>ApnaPG Cover</p>
-          <p>Supporting people with disabilities</p>
-          <p>Cancelation options</p>
-          <p>Our Covid-19 response</p>
-          <p>Report a neighborhood concern</p>
+    <footer className="py-12 bg-[#003B95] border-t border-[#535bf8] text-white relative bottom-0 z-[20]">
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-between max-w-screen-2xl mx-auto px-10">
+        <div className="flex flex-col gap-4 text-sm">
+          <h6 className="text-base font-bold">Support</h6>
+          <p className="text-white">Help Center</p>
+          <p className="text-white">Get help with a safety issue</p>
+          <p className="text-white">ApnaPG Cover</p>
+          <p className="text-white">Supporting people with disabilities</p>
+          <p className="text-white">Cancelation options</p>
+          <p className="text-white">Our Covid-19 response</p>
+          <p className="text-white">Report a neighborhood concern</p>
         </div>
-        <div className="flex flex-col gap-4 opacity-80">
-          <h6 className="font-semibold">Community</h6>
-          <p>ApnaPG.org: Disaster relief housing</p>
-          <p>Combating discrimination</p>
+        <div className="flex flex-col gap-4 text-sm">
+          <h6 className="text-base font-bold">Community</h6>
+          <p className="text-white">ApnaPG.org: Disaster relief housing</p>
+          <p className="text-white">Combating discrimination</p>
         </div>
-        <div className="flex flex-col gap-4 opacity-80">
-          <h6 className="font-semibold">Hosting</h6>
-          <p>Rent your home</p>
-          <p>ApnaPG Cover for Hosts</p>
-          <p>Explore hosting resources</p>
-          <p>Visit our community forum</p>
-          <p>How to host responsibly</p>
-          <p>Budget friendly apartments</p>
+        <div className="flex flex-col gap-4 text-sm">
+          <h6 className="text-base font-bold">Hosting</h6>
+          <p className="text-white">Rent your home</p>
+          <p className="text-white">ApnaPG Cover for Hosts</p>
+          <p className="text-white">Explore hosting resources</p>
+          <p className="text-white">Visit our community forum</p>
+          <p className="text-white">How to host responsibly</p>
+          <p className="text-white">Budget friendly apartments</p>
         </div>
-        <div className="flex flex-col gap-4 opacity-80">
-          <h6 className="font-semibold">ApnaPG</h6>
-          <p>Newsroom</p>
-          <p>ApnaPG Cover for Hosts</p>
-          <p>Explore hosting resources</p>
-          <p>Visit our community forum</p>
-          <p>How to host responsibly</p>
-          <p>Budget friendly apartments</p>
+        <div className="flex flex-col gap-4 text-sm">
+          <h6 className="text-base font-bold">ApnaPG</h6>
+          <p className="text-white">Newsroom</p>
+          <p className="text-white">ApnaPG Cover for Hosts</p>
+          <p className="text-white">Explore hosting resources</p>
+          <p className="text-white">Visit our community forum</p>
+          <p className="text-white">How to host responsibly</p>
+          <p className="text-white">Budget friendly apartments</p>
         </div>
       </section>
       <hr className="bg-[#f7f7f7] mt-10 mb-6" />
-      <section className=" flex flex-row flex-wrap justify-between gap-10 px-10 max-w-screen-2xl mx-auto">
-        <div className=" flex flex-row flex-wrap items-center">
-          <p>© 2024 ApnaPG, Inc.</p>
-          <span className=" p-3">·</span>
-          <p>Terms</p>
-          <span className=" p-3">·</span>
-          <p>Privacy</p>
-          <span className=" p-3">·</span>
-          <p>Your Privacy Choices</p>
+      <section className="flex flex-row flex-wrap justify-between gap-10 px-10 max-w-screen-2xl mx-auto">
+        <div className="flex flex-row flex-wrap items-center text-sm">
+          <p className="text-white">© 2024 ApnaPG, Inc.</p>
+          <span className="p-3">·</span>
+          <p className="text-white">Terms</p>
+          <span className="p-3">·</span>
+          <p className="text-white">Privacy</p>
+          <span className="p-3">·</span>
+          <p className="text-white">Your Privacy Choices</p>
         </div>
-        <div className=" flex flex-row gap-5 min-w-[120px] items-center">
-          <p>English (US)</p>
-          <img src={facebookIcon} alt="Facebook" className=" w-6" />
-          <img src={linkedinIcon} alt="Linkedin" className=" w-6" />
+        <div className="flex flex-row gap-5 min-w-[120px] items-center text-sm">
+          <p className="text-white">English (US)</p>
+          <img src={facebookIcon} alt="Facebook" className="w-6" />
+          <img src={linkedinIcon} alt="Linkedin" className="w-6" />
         </div>
       </section>
     </footer>

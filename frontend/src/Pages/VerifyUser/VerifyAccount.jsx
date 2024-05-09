@@ -30,6 +30,7 @@ const verificationOptions = [
 
 const VerifyAccount = () => {
   const user = useSelector((state) => state.user.userDetails);
+  console.log("The user from verify account is", user);
   const userId = user?._id;
 
   const dispatch = useDispatch();
