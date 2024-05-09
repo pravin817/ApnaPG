@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 
 // Get the list of all Listings
 const getAllListing = async (req, res) => {
+  console.log("Get all listing hit");
   try {
     const data = await Room.find({});
 
@@ -37,6 +38,7 @@ const getAllListing = async (req, res) => {
 
 // Get the single room details || POST
 const getOneListing = async (req, res) => {
+  console.log("Get one listing hit");
   try {
     const payload = req.body;
     const listingId = payload.id;
@@ -87,6 +89,7 @@ const getOneListing = async (req, res) => {
 
 // Get the listing of rooms based on category || POST
 const getListingDataByCat = async (req, res) => {
+  console.log("Get listing by category hit");
   try {
     const payload = req.body;
     const category = payload.category;
@@ -124,6 +127,7 @@ const getListingDataByCat = async (req, res) => {
 
 // Get the details of the room || POST
 const getRoomDetails = async (req, res) => {
+  console.log("Get room details hit");
   try {
     console.log("The user from the get Room Details", req.user);
     console.log(req.body);
@@ -167,6 +171,7 @@ const getRoomDetails = async (req, res) => {
 
 // Save the room structure || POST
 const saveRoomStructure = async (req, res) => {
+  console.log("Save room structure hit");
   try {
     const userId = req.user;
     const payload = req.body;
@@ -218,6 +223,7 @@ const saveRoomStructure = async (req, res) => {
 
 // Save the room privacy Type || POST
 const savePrivacyType = async (req, res) => {
+  console.log("Save privacy type hit");
   try {
     const userId = req.user;
     const payload = req.body;
@@ -254,6 +260,7 @@ const savePrivacyType = async (req, res) => {
 
 // Save the room Location || POST
 const saveRoomLocation = async (req, res) => {
+  console.log("Save room location hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -288,6 +295,7 @@ const saveRoomLocation = async (req, res) => {
 
 // Save the room floor plan || POST
 const saveFloorPlan = async (req, res) => {
+  console.log("Save floor plan hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -326,6 +334,7 @@ const saveFloorPlan = async (req, res) => {
 
 // Save the room amenities || POST
 const saveAmenities = async (req, res) => {
+  console.log("Save amenities hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -371,6 +380,7 @@ const saveAmenities = async (req, res) => {
 
 // Save the room photos || POST
 const savePhotos = async (req, res) => {
+  console.log("Save photos hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -404,6 +414,7 @@ const savePhotos = async (req, res) => {
 
 // Save the title for the room || POST
 const saveTitle = async (req, res) => {
+  console.log("Save title hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -444,6 +455,7 @@ const saveTitle = async (req, res) => {
 
 // Save the description for the room || POST
 const saveDescription = async (req, res) => {
+  console.log("Save description hit");
   try {
     console.log("The description", req.body);
     const payload = req.body;
@@ -462,7 +474,6 @@ const saveDescription = async (req, res) => {
     };
 
     // Update the room and save the description
-
     const roomDetails = await Room.findOneAndUpdate(
       findCriteria,
       { description },
@@ -486,6 +497,7 @@ const saveDescription = async (req, res) => {
 
 // Save the room highlight || POST
 const saveHighlight = async (req, res) => {
+  console.log("Save highlight hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -514,9 +526,10 @@ const saveHighlight = async (req, res) => {
         roomDetails,
       });
     } else {
-      return res
-        .status(400)
-        .json({ message: "Room highlight are required", success: false });
+      return res.status(400).json({
+        message: "Room highlight are required",
+        success: false,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -530,6 +543,7 @@ const saveHighlight = async (req, res) => {
 
 // Save the guest type for the room || POST
 const saveGuestType = async (req, res) => {
+  console.log("Save guest type hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -567,6 +581,7 @@ const saveGuestType = async (req, res) => {
 
 // Save the base price for the room || POST
 const savePrices = async (req, res) => {
+  console.log("Save prices hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -609,6 +624,7 @@ const savePrices = async (req, res) => {
 
 // Save the additional security for the room || POST
 const saveSecurity = async (req, res) => {
+  console.log("Save security hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
@@ -642,6 +658,7 @@ const saveSecurity = async (req, res) => {
 
 // Publish the room || POST
 const publishRoom = async (req, res) => {
+  console.log("Publish room hit");
   try {
     const payload = req.body;
     const roomId = payload.roomId;
