@@ -12,27 +12,27 @@ const StepsOfHosting = () => {
       <div className="flex flex-col gap-5">
         <OverviewCard
           num={1}
-          head={"Tell us about your place"}
+          head={"Describe your property"}
           desc={
-            "Share some basic info, like where it is and how many guests can stay."
+            "Clarify whether it's a whole property or individual rooms. Specify the location and maximum guest capacity for ApnaPG."
           }
           img={aboutPlace}
         />
         <hr className=" my-5 bg-[#dddddd] h-[1.4px]" />
         <OverviewCard
           num={2}
-          head={"Make it stand out"}
+          head={"Elevate your listing"}
           desc={
-            "Add 5 or more photos plus a title and description—we’ll help you out."
+            "Highlight unique amenities and upload 3 photos. Craft a captivating title and description for your ApnaPG space."
           }
           img={standOut}
         />
         <hr className=" my-5 bg-[#dddddd] h-[1.4px]" />
         <OverviewCard
           num={3}
-          head={"Finish up and publish"}
+          head={"Complete and publish"}
           desc={
-            "Choose if you'd like to start with an experienced guest, set a starting price, and publish your listing."
+            "Opt for experienced guests, set nightly rates. Answer questions and publish your listing when satisfied on ApnaPG."
           }
           img={publish}
         />

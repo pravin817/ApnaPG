@@ -11,8 +11,8 @@ const ListingDescriptions = ({ listingData, author }) => {
 
   const latLongNaN = isNaN(latitude) || isNaN(latitude);
 
-  console.log("The lat long : ", latLong);
-  console.log("The lat long NaN : ", latLongNaN);
+  // console.log("The lat long : ", latLong);
+  // console.log("The lat long NaN : ", latLongNaN);
 
   return (
     <>

@@ -23,6 +23,7 @@ const ListingRoomStepTwoHighlight = () => {
       setStoredCardData([...storedCardData, name]);
     }
   };
+  console.log("Stored Card Data ", storedCardData);
 
   useEffect(() => {
     dispatch(

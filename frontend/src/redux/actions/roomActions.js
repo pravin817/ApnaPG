@@ -51,7 +51,7 @@ export const createNewRoom =
     amenitiesData,
     roomPhotos,
     roomTitle,
-    roomDescription,
+    description,
     roomHighlights,
     guestType,
     priceBeforeTaxes,
@@ -68,7 +68,7 @@ export const createNewRoom =
       amenities: amenitiesData,
       photos: roomPhotos,
       title: roomTitle,
-      description: roomDescription,
+      description: description,
       highlights: roomHighlights,
       guestType: guestType,
       priceBeforeTaxes: priceBeforeTaxes,
@@ -97,6 +97,7 @@ export const saveStructure = (roomStructure) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -116,6 +117,7 @@ export const savePrivacyType = (privacyType) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save privacy type action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -135,6 +137,7 @@ export const saveRoomLocation = (locationData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save room location action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -154,6 +157,7 @@ export const saveFloorPlan = (floorPlanData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save floor plan action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -173,6 +177,7 @@ export const saveAmenities = (amenitiesData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save amenities action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -192,6 +197,7 @@ export const savePhotos = (photosData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save photos action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -211,25 +217,7 @@ export const saveTitle = (titleData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const saveDescription = (descriptionData) => async (dispatch) => {
-  try {
-    const res = await api.post(`/room/save-description`, descriptionData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (res.data?.success) {
-      dispatch({
-        type: "CURRENT_NEW_ROOM",
-        payload: res.data?.roomDetails,
-      });
-    }
+    console.log("response from the save title action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -250,6 +238,27 @@ export const saveHighlight = (highlightData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save highlight action: ", res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const saveDescription = (descriptionData) => async (dispatch) => {
+  try {
+    const res = await api.post(`/room/save-description`, descriptionData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.data?.success) {
+      dispatch({
+        type: "CURRENT_NEW_ROOM",
+        payload: res.data?.roomDetails,
+      });
+    }
+    console.log("response from the save description action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -269,6 +278,7 @@ export const saveGuestType = (guestTypeData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save guest type action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -288,6 +298,7 @@ export const savePrices = (priceData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save prices action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -304,6 +315,7 @@ export const saveSecurity = (securityData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the save security action: ", res.data);
   } catch (error) {
     console.log(error);
   }
@@ -321,6 +333,7 @@ export const publishRoom = (publishRoomData) => async (dispatch) => {
         payload: res.data?.roomDetails,
       });
     }
+    console.log("response from the publish room action: ", res.data);
   } catch (error) {
     console.log(error);
   }

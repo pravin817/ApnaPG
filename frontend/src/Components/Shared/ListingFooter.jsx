@@ -18,6 +18,7 @@ import {
   saveStructure,
   saveTitle,
 } from "../../redux/actions/roomActions";
+
 import { userRole } from "../../redux/actions/userActions";
 
 const ListingFooter = () => {
@@ -33,12 +34,10 @@ const ListingFooter = () => {
   const [progress, setProgress] = useState(0);
 
   const url = window.location.pathname;
-  console.log("Current URL", url);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const currentRoomId = localStorage.getItem("currentRoomId");
-  console.log("Current Room Id", currentRoomId);
 
   useEffect(() => {
     dispatch(getRoomDetails(currentRoomId));
@@ -75,11 +74,11 @@ const ListingFooter = () => {
     if (currentStepIndex < steps.length - 1) {
       setLoading(true);
       console.log("Current Step Index", currentStepIndex);
+
       if (currentStepIndex === 0) {
         // Handle action related to the user
         await dispatch(userRole());
       } else if (currentStepIndex === 2) {
-        // Handle action related to the room structure
         const roomData = {
           roomType: createRoomData?.newRoom?.roomType,
           roomId: currentListingRoomId,
@@ -140,7 +139,7 @@ const ListingFooter = () => {
         // get the room highlight data
         const highlightData = {
           ///////////////////////////////////////////////// BIG BIGWarning /////////////////////////////////////////////////////
-          highlight: createRoomData?.newRoom?.highlight,
+          highlight: createRoomData?.newRoom?.highlights,
           roomId: currentListingRoomId,
         };
 
