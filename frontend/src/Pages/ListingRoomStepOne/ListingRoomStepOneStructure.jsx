@@ -1,20 +1,10 @@
 // Import the assets
-import { PiHouseLine, PiTent } from "react-icons/pi";
-import {
-  MdOutlineApartment,
-  MdOutlineCabin,
-  MdOutlineCastle,
-} from "react-icons/md";
+import { PiHouseLine } from "react-icons/pi";
+import { MdOutlineApartment } from "react-icons/md";
 import { TbSailboat2, TbCamper } from "react-icons/tb";
-import {
-  GiMountainCave,
-  GiLightningDome,
-  GiControlTower,
-  GiTreehouse,
-} from "react-icons/gi";
-import { GoContainer } from "react-icons/go";
-import { RiEarthquakeLine } from "react-icons/ri";
+
 import { LiaHotelSolid } from "react-icons/lia";
+import { AiOutlineApartment } from "react-icons/ai";
 
 import StructureCard from "../../Components/ListingRoom/StructureCard";
 import { useState } from "react";
@@ -51,110 +41,39 @@ const ListingRoomStepOneStructure = () => {
         <StructureCard
           style={structureCardStyle}
           Img={MdOutlineApartment}
-          name={"Apartment"}
+          name={"Hostel"}
           onClick={handleStoreCardData}
           storedCardData={storedCardData}
           svgSize={svgSize}
           ptagStyle={structurePtagClass}
         />
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={GiTreehouse}
-          name={"Tree house"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={TbSailboat2}
-          name={"Boat"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
         <StructureCard
           style={structureCardStyle}
-          Img={MdOutlineCabin}
-          name={"Cabin"}
+          Img={TbSailboat2}
+          name={"1 BHK"}
           onClick={handleStoreCardData}
           storedCardData={storedCardData}
           svgSize={svgSize}
           ptagStyle={structurePtagClass}
         />
-        {/* <StructureCard
+        <StructureCard
+          style={structureCardStyle}
+          Img={AiOutlineApartment}
+          name={"2 BHK"}
+          onClick={handleStoreCardData}
+          storedCardData={storedCardData}
+          svgSize={svgSize}
+          ptagStyle={structurePtagClass}
+        />
+        <StructureCard
           style={structureCardStyle}
           Img={TbCamper}
-          name={"Camper"}
+          name={"PG"}
           onClick={handleStoreCardData}
           storedCardData={storedCardData}
           svgSize={svgSize}
           ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={MdOutlineCastle}
-          name={"Castle"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={GiMountainCave}
-          name={"Cave"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={GoContainer}
-          name={"Container"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={GiLightningDome}
-          name={"Dome"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={RiEarthquakeLine}
-          name={"Earth home"}
-          onClick={handleStoreCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={PiTent}
-          name={"Tent"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
-        {/* <StructureCard
-          style={structureCardStyle}
-          Img={GiControlTower}
-          name={"Tower"}
-          onClick={handleStoreCardData}
-          storedCardData={storedCardData}
-          svgSize={svgSize}
-          ptagStyle={structurePtagClass}
-        /> */}
+        />
         <StructureCard
           style={structureCardStyle}
           Img={LiaHotelSolid}

@@ -139,7 +139,7 @@ const WelcomePopUp = ({
       <div className="px-8 pt-4">
         <h2 className="font-medium text-[22px] text-[#222222]">
           Welcome to
-          <span className="text-[#ff385c] font-semibold">Apna</span>
+          <span className="text-[#003B95] font-semibold">Apna</span>
           <span className="text-black font-semibold">PG</span>
         </h2>
         <form onSubmit={handleSubmit(handleCheckEmail)}>
@@ -164,7 +164,7 @@ const WelcomePopUp = ({
           </p>
 
           <button
-            className={`bg-[#ff385c] hover:bg-[#d90b63] transition-all duration-300 text-white font-medium rounded-lg p-3 w-full disabled:bg-[#dddddd] ${
+            className={`bg-[#003B95] hover:bg-[#003c95e7] transition-all duration-300 text-white font-medium rounded-lg p-3 w-full disabled:bg-[#dddddd] ${
               isLoading ? " cursor-not-allowed" : ""
             }`}
             type="submit"

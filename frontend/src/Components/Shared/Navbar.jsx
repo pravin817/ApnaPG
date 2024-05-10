@@ -164,53 +164,33 @@ const Navbar = () => {
                 <div className="px-1 py-2 flex items-center justify-between transition-all cursor-pointer">
                   <div className="flex flex-col w-full  transition duration-200">
                     {/* The main search bar  */}
-                    {showExtendedSearch && !hideSmallSearch ? (
-                      <>
-                        <h1
-                          className="text-base text-center"
-                          onClick={() => {
-                            setHideSmallSearch((prev) => !prev);
-                          }}
-                        >
-                          Search the best place to live
-                        </h1>
-                      </>
-                    ) : (
-                      <>
-                        <div
-                          className="w-[100%] mx-auto cursor-pointer"
-                          onClick={() => {
-                            setHideSmallSearch((prev) => !prev);
-                          }}
-                        >
-                          <div className="flex items-center justify-between border-[1px] border-[#dddddd] bg-white rounded-lg px-3 py-2 shadow hover:shadow-md transition-all cursor-pointer">
-                            <p className="text-sm">
-                              <span className="font-semibold px-2">
-                                Anywhere
-                              </span>{" "}
-                              <span className="text-white"> | </span>{" "}
-                              <span className="font-semibold px-2">
-                                Any week
-                              </span>{" "}
-                              <span className="text-gray-400"> | </span>{" "}
-                              <span className="px-2 text-gray-400">
-                                Add guests
-                              </span>{" "}
-                            </p>
-                            {/* <button className=" rounded-full  bordeinline-block p-1">
+
+                    <div
+                      className="w-[100%] mx-auto cursor-pointer"
+                      onClick={() => {
+                        setHideSmallSearch((prev) => !prev);
+                      }}
+                    >
+                      <div className="flex items-center justify-between border-[1px] border-[#dddddd] bg-white rounded-lg px-3 py-2 shadow hover:shadow-md transition-all cursor-pointer">
+                        <p className="text-sm">
+                          <span className="font-semibold px-2">Anywhere</span>{" "}
+                          <span className="text-white"> | </span>{" "}
+                          <span className="font-semibold px-2">Any week</span>{" "}
+                          <span className="text-gray-400"> | </span>{" "}
+                          <span className="px-2 text-gray-400">Add guests</span>{" "}
+                        </p>
+                        {/* <button className=" rounded-full  bordeinline-block p-1">
                                 <img
                                   src={searchIcon}
                                   alt="Search"
                                   className="w-5 text-black"
                                 />
                             </button> */}
-                            <div className="borderinline-block p-1">
-                              <FaSearch className="w-5 text-black" />
-                            </div>
-                          </div>
+                        <div className="borderinline-block p-1">
+                          <FaSearch className="w-5 text-black" />
                         </div>
-                      </>
-                    )}
+                      </div>
+                    </div>
                   </div>
                 </div>
 

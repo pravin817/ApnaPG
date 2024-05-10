@@ -13,18 +13,18 @@ const Apartments = () => {
       <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
         <SetupCard
           img={apartment1}
-          heading={"Park 12 Apartments"}
-          subHeading={"San Diego, California"}
+          heading={"Indra Apartments"}
+          subHeading={"New Delhi, Delhi"}
         />
         <SetupCard
           img={apartment2}
-          heading={"Old Town Apartments"}
-          subHeading={"Scottsdale, Arizona"}
+          heading={"Apna Residency"}
+          subHeading={"Mumbai, Maharashtra"}
         />
         <SetupCard
           img={apartment3}
-          heading={"525 Olive Apartments"}
-          subHeading={"San Diego, California"}
+          heading={"Greenwood Heights"}
+          subHeading={"Bangalore, Karnataka"}
         />
       </div>
       <h6 className="text-base sm:text-lg md:text-xl text-center text-[#222222] sm:w-[80%] mx-auto">

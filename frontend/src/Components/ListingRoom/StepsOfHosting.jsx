@@ -5,12 +5,12 @@ import OverviewCard from "./OverviewCard";
 
 const StepsOfHosting = () => {
   return (
-    <section className=" h-[92vh] grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 justify-between items-center bg-white max-w-screen-xl xl:mx-auto mb-10 lg:mt-4">
-      <h1 className="text-[#222222] text-3xl sm:text-3xl xl:text-[56px] font-medium max-w-[600px] leading-[2]">
+    <section className=" h-[92vh] grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10 justify-between items-center bg-white max-w-screen-xl xl:mx-auto mb-10 lg:mt-4">
+      
+      <h1 className="text-3xl text-[#222222] sm:text-3xl xl:text-[45px] font-medium">
         Getting started on ApnaPG is simple and straightforward
       </h1>
-
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-4">
         <OverviewCard
           num={1}
           head={"Describe your property"}

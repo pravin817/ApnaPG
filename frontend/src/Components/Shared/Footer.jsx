@@ -1,5 +1,4 @@
-import linkedinIcon from "../../assets/BasicIcon/linkedinIcon.svg";
-import facebookIcon from "../../assets/BasicIcon/facebookIcon.svg";
+import { FaFacebook, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -52,8 +51,8 @@ const Footer = () => {
         </div>
         <div className="flex flex-row gap-5 min-w-[120px] items-center text-sm">
           <p className="text-white">English (US)</p>
-          <img src={facebookIcon} alt="Facebook" className="w-6" />
-          <img src={linkedinIcon} alt="Linkedin" className="w-6" />
+          <FaFacebook className="w-6" size={23} />
+          <FaLinkedin className="w-6" size={23} />
         </div>
       </section>
     </footer>

@@ -147,7 +147,7 @@ const LoginPopUp = ({
           </div>
 
           <button
-            className={`bg-[#ff385c] hover:bg-[#d90b63] transition-all duration-300 text-white font-medium rounded-lg p-3 w-full disabled:bg-[#dddddd] ${
+            className={`bg-[#003B95] hover:bg-[#003c95e7] transition-all duration-300 text-white font-medium rounded-lg p-3 w-full disabled:bg-[#dddddd] ${
               isLoading ? " cursor-not-allowed" : ""
             }`}
             type="submit"
