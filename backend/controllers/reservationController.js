@@ -2,6 +2,10 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const reservation = require("../models/reservation.model");
 const Room = require("../models/room.model");
+const {
+  sendRoomBookingInvoice,
+} = require("../utils/mail/sendRoomBookingInvoice");
+const User = require("../models/user.model");
 
 // stripe controller & payment process
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -42,6 +46,7 @@ const createPaymentIntent = async (req, res) => {
 const newReservation = async (req, res) => {
   try {
     const payload = req.body;
+    const userId = req.user;
 
     const listingId = payload.listingId;
     const authorId = payload.authorId;
@@ -51,6 +56,19 @@ const newReservation = async (req, res) => {
     const nightStaying = payload.nightStaying;
     const orderId = payload.orderId;
 
+    // find the user
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.status(404).json({
+        message: "User not found",
+        status: false,
+      });
+    }
+
+    // console.log("The user is: ", user);
+
+    // Find the listing details
     const findCriteria = {
       _id: new mongoose.Types.ObjectId(listingId),
     };
@@ -62,6 +80,7 @@ const newReservation = async (req, res) => {
     const authorEarnedPrice =
       basePrice - Math.round((parseInt(basePrice) * 3) / 100);
 
+    // save the reservation
     let newReservation = {
       listingId: listingId,
       authorId: authorId,
@@ -85,6 +104,20 @@ const newReservation = async (req, res) => {
 
     if (!listing.includes(true)) {
       const saveReservation = new reservation(newReservation).save();
+
+      console.log("The room details is: ", listingDetails);
+      console.table([guestNumber, checkIn, checkOut, nightStaying, orderId,tax]);
+      await sendRoomBookingInvoice(
+        user,
+        listingDetails,
+        guestNumber,
+        checkIn,
+        checkOut,
+        nightStaying,
+        orderId,
+        basePrice,
+        tax,
+      );
       res.status(200).json({
         message: "Payment confirmed.",
         success: true,

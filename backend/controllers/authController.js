@@ -4,10 +4,8 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const User = require("../models/user.model");
 const Room = require("../models/room.model");
-const {
-  sendVerificationOTPEmail,
-} = require("../utils/sendOTPVerificationEmail");
 const { sendSMS } = require("../utils/SMS/sendSMS");
+const { sendVerificationOTPEmail } = require("../utils/mail/sendOTPVerificationEmail");
 
 const saltRounds = 10;
 const daysToSeconds = 1 * 60 * 60; //   days * hours *  minutes *  seconds
