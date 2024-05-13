@@ -8,7 +8,7 @@ const DashboardCards = ({ reservations, totalPrice }) => {
   // Calculate the total booking
   const currentDate = new Date(); // get the current Date and Time
 
-  console.log("The current date is ", currentDate);
+  // console.log("The current date is ", currentDate);
 
   // Find the active booking reservations
   const activeBookingReservations = reservations?.filter((reservation) => {
@@ -65,7 +65,7 @@ const DashboardCards = ({ reservations, totalPrice }) => {
       <Cards
         title={"Total Revenue"}
         icon={revenueIcon}
-        heading={`$${totalPrice}`}
+        heading={`₹ ${totalPrice}`}
         subHeading={"+12% increase"}
       />
       <Cards

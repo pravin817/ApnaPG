@@ -11,6 +11,7 @@ const ReservationsData = ({ active }) => {
   const authorReservations = useSelector(
     (state) => state.reservations.authorReservations
   );
+
   console.log("The author reservations are ", authorReservations);
   const [reservations, setReservations] = useState([]);
   const [upcomingReservations, setUpcomingReservations] = useState([]);
@@ -20,29 +21,34 @@ const ReservationsData = ({ active }) => {
   // getting authors reservation
   useEffect(() => {
     dispatch(getAuthorReservations());
-  }, []);
+  }, [dispatch]);
 
   // removing duplicates
   useEffect(() => {
-    setReservations(
-      removeDuplicates(authorReservations, "checkIn", "checkOut")
-    );
+    // setReservations(
+    //   removeDuplicates(authorReservations, "checkIn", "checkOut")
+    // );
+
+    setReservations(authorReservations);
   }, [authorReservations]);
 
   // setting upcoming and completed reservations
   useEffect(() => {
     const currentDate = new Date().toISOString();
 
-    const upcoming = reservations.filter(
-      (reservation) => reservation.checkIn > currentDate
-    );
-    const completed = reservations.filter(
-      (reservation) => reservation.checkOut < currentDate
-    );
+    const upcoming = reservations.filter((reservation) => {
+      return reservation.checkIn > currentDate;
+    });
+    const completed = reservations.filter((reservation) => {
+      return reservation.checkOut < currentDate;
+    });
 
     setUpcomingReservations(upcoming);
     setCompletedReservations(completed);
   }, [reservations]);
+
+  console.log("The upcoming reservations are ", upcomingReservations);
+  console.log("The completed reservations are ", completedReservations);
 
   return (
     <section className="py-10 flex justify-center items-center overflow-x-auto pl-10 sm:pl-44 lg:pl-0">

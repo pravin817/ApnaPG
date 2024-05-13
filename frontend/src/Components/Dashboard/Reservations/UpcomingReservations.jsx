@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const UpcomingReservations = ({ data }) => {
+  console.log("The upcoming reservations data is: ", data);
   return (
     <div className="flex flex-col overflow-x-auto">
       <div>
@@ -99,7 +100,7 @@ const UpcomingReservations = ({ data }) => {
 
                       {/* CheckOut  */}
                       <td className=" px-6 py-4 w-[120px]">
-                        <p className="text-sm text-[#222222]">{checkOut}</p>
+                        <p className="text-sm text-[#222222]">{checkout}</p>
                       </td>
                     </tr>
                   );

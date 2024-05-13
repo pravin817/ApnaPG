@@ -40,7 +40,7 @@ const CompletedReservations = ({ data }) => {
                   const checkIn = new Date(
                     listing.checkIn
                   ).toLocaleDateString();
-                  const checkout = new Date(
+                  const checkOut = new Date(
                     listing.checkOut
                   ).toLocaleDateString();
 
