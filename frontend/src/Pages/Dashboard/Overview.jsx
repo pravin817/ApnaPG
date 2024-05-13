@@ -13,18 +13,18 @@ const Overview = () => {
     (state) => state.reservations.authorReservations
   );
 
+  console.log("Listing reservations ", listingReservations);
+
   const dispatch = useDispatch();
 
   // set reservation to the global store
   useEffect(() => {
     dispatch(getAuthorReservations());
-  }, []);
+  }, [dispatch]);
 
   // remove duplicates and set reservation to state
   useEffect(() => {
-    setReservations(
-      removeDuplicates(listingReservations, "checkIn", "checkOut")
-    );
+    setReservations(listingReservations);
   }, [listingReservations]);
 
   console.log("The reservations ", reservations);
