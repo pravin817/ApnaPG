@@ -2,6 +2,7 @@ const initialState = {
   userDetails: null,
   loginResponse: Number,
   responseMessage: "",
+  wishlist: [],
 };
 
 const userReducer = (state = initialState, { type, payload }) => {
@@ -32,18 +33,30 @@ const userReducer = (state = initialState, { type, payload }) => {
         userDetails: null,
         loginResponse: 0,
         responseMessage: "",
+        wishlist: [],
       };
 
     case "GET_USER_DETAILS":
       return {
+        ...state,
         userDetails: payload,
       };
-
     case "CHANGE_USER_ROLE":
       return {
+        ...state,
         userDetails: payload.updatedUserDetails,
       };
 
+    case "ADD_TO_WISHLIST":
+      return {
+        ...state,
+        wishlist: [...state.wishlist, payload],
+      };
+    case "REMOVE_FROM_WISHLIST":
+      return {
+        ...state,
+        wishlist: state.wishlist.filter((roomId) => roomId !== payload),
+      };
     default:
       return state;
   }

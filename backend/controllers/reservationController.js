@@ -6,6 +6,7 @@ const {
   sendRoomBookingInvoice,
 } = require("../utils/mail/sendRoomBookingInvoice");
 const User = require("../models/user.model");
+const Reservation = require("../models/reservation.model");
 
 // stripe controller & payment process
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -73,6 +74,7 @@ const newReservation = async (req, res) => {
       _id: new mongoose.Types.ObjectId(listingId),
     };
 
+    // Get the listing details -- Room details
     const listingDetails = await Room.findById(findCriteria);
 
     const basePrice = parseInt(listingDetails.basePrice);
@@ -84,6 +86,7 @@ const newReservation = async (req, res) => {
     let newReservation = {
       listingId: listingId,
       authorId: authorId,
+      bookBy: userId,
       guestNumber: parseInt(guestNumber),
       checkIn: checkIn,
       checkOut: checkOut,
@@ -106,7 +109,14 @@ const newReservation = async (req, res) => {
       const saveReservation = new reservation(newReservation).save();
 
       console.log("The room details is: ", listingDetails);
-      console.table([guestNumber, checkIn, checkOut, nightStaying, orderId,tax]);
+      // console.table([
+      //   guestNumber,
+      //   checkIn,
+      //   checkOut,
+      //   nightStaying,
+      //   orderId,
+      //   tax,
+      // ]);
       await sendRoomBookingInvoice(
         user,
         listingDetails,
@@ -116,7 +126,7 @@ const newReservation = async (req, res) => {
         nightStaying,
         orderId,
         basePrice,
-        tax,
+        tax
       );
       res.status(200).json({
         message: "Payment confirmed.",
@@ -175,6 +185,7 @@ const getAuthorReservations = async (req, res) => {
 const getAllReservations = async (req, res) => {
   try {
     const payload = req.body;
+    const userId = req.user;
     const listingId = payload.id;
 
     console.log("The req body from the get-reservations: ", req.body);
@@ -209,10 +220,73 @@ const getAllReservations = async (req, res) => {
   }
 };
 
+// Route to get bookings by user
+const getUsersBooking = async (req, res) => {
+  try {
+    const userId = req.user;
+
+    // Find bookings by user ID
+    const bookings = await Reservation.find({ bookBy: userId });
+
+    const bookingData = [];
+
+    // If there are no bookings, return 404
+    if (!bookings || bookings.length === 0) {
+      return res.status(200).json({
+        message: "Bookings not found",
+        success: false,
+      });
+    }
+
+    const len = bookings.length;
+    console.log("The length of the bookings is: ", len);
+
+    for (let i = 0; i < len; i++) {
+      const listingId = bookings[i].listingId;
+      const listingDetails = await Room.findById(listingId);
+
+      const roomAuthor = bookings[i].authorId;
+      const authorDetails = await User.findById(roomAuthor);
+
+      bookingData.push({
+        id: listingDetails._id.toString(),
+        title: listingDetails.title,
+        photos: listingDetails.photos[0],
+        description: listingDetails.description,
+        location: listingDetails.location,
+        hostedBy:
+          authorDetails.name.firstName + " " + authorDetails.name.lastName,
+        hostMobileNo: "+91 " + authorDetails.mobileNo,
+        hostEmail: authorDetails.emailId,
+        checkIn: bookings[i].checkIn,
+        checkOut: bookings[i].checkOut,
+        nightStaying: bookings[i].nightStaying,
+        guestNumber: bookings[i].guestNumber,
+        basePrice: bookings[i].basePrice,
+        taxes: bookings[i].taxes,
+        totalPrice: bookings[i].basePrice + bookings[i].taxes,
+      });
+    }
+
+    console.log("The booking data is: ", bookingData);
+
+    // Return the list of bookings and user details
+    res.status(200).json({
+      message: "Booking data fetched successfully",
+      success: true,
+      booking: bookingData,
+    });
+  } catch (error) {
+    console.error("Error getting bookings:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getStripePublishableKey,
   createPaymentIntent,
   newReservation,
   getAuthorReservations,
   getAllReservations,
+  getUsersBooking,
 };

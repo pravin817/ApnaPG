@@ -158,6 +158,10 @@ const userSchema = new mongoose.Schema(
         type: String,
       },
     },
+    wishlist: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );

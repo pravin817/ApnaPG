@@ -8,6 +8,9 @@ const reservationSchema = new mongoose.Schema(
     authorId: {
       type: String,
     },
+    bookBy: {
+      type: String,
+    },
     checkIn: {
       type: String,
     },
@@ -38,6 +41,6 @@ const reservationSchema = new mongoose.Schema(
   }
 );
 
-const reservation = mongoose.model("reservation", reservationSchema);
+const Reservation = mongoose.model("reservation", reservationSchema);
 
-module.exports = reservation;
+module.exports = Reservation;

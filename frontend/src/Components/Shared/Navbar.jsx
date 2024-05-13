@@ -53,11 +53,11 @@ const Navbar = () => {
 
   // get the user
   const user = useSelector((state) => state.user.userDetails);
-  console.log("The user form navbar : ", user);
+  // console.log("The user form navbar : ", user);
 
   // Get the user id
   const userId = user?._id;
-  console.log("The user Id is ", userId);
+  // console.log("The user Id is ", userId);
 
   const dispatch = useDispatch();
 
@@ -360,19 +360,14 @@ const Navbar = () => {
                           )}
 
                           <Link
+                            to={`/users/show/booking/${userId}`}
                             className="font-medium"
-                            onClick={() => {
-                              setShowUserMenu(false);
-                            }}
                           >
                             Bookings
                           </Link>
-
                           <Link
+                            to={`/users/show/wishlist/${userId}`}
                             className="font-medium"
-                            onClick={() => {
-                              setShowUserMenu(false);
-                            }}
                           >
                             WishLists
                           </Link>

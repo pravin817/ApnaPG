@@ -689,6 +689,90 @@ const publishRoom = async (req, res) => {
   }
 };
 
+// Controller function to add item to wishlist
+const addToWishlist = async (req, res) => {
+  try {
+    const userId = req.user;
+    const roomId = req.body.roomId;
+
+    // Find the user
+    const user = await User.findById(userId);
+
+    // Ensure user has a wishlist initialized
+    if (!user.wishlist) {
+      user.wishlist = [];
+    }
+
+    // Check if the room ID is already in the wishlist
+    const index = user.wishlist.indexOf(roomId);
+    if (index !== -1) {
+      // Room ID exists, so return with success message
+      res.status(200).json({
+        message: "Room is already in the wishlist",
+        success: true,
+      });
+    } else {
+      // Room ID doesn't exist, so add it to the wishlist
+      user.wishlist.push(roomId);
+      await user.save();
+      console.log("Room added to wishlist:", roomId);
+      res.status(200).json({
+        message: "Room added to wishlist successfully",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.error("Error updating wishlist:", error);
+    res.status(500).json({
+      message: "Error while updating the wishlist",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+// Controller function to remove item from wishlist
+const removeFromWishlist = async (req, res) => {
+  try {
+    const userId = req.user;
+    const roomId = req.body.roomId;
+
+    // Find the user
+    const user = await User.findById(userId);
+
+    // Ensure user has a wishlist initialized
+    if (!user.wishlist) {
+      user.wishlist = [];
+    }
+
+    // Check if the room ID is in the wishlist
+    const index = user.wishlist.indexOf(roomId);
+    if (index !== -1) {
+      // Room ID exists, so remove it from the wishlist
+      user.wishlist.splice(index, 1);
+      await user.save();
+      console.log("Room removed from wishlist:", roomId);
+      res.status(200).json({
+        message: "Room removed from wishlist successfully",
+        success: true,
+      });
+    } else {
+      // Room ID doesn't exist, so return with success message
+      res.status(200).json({
+        message: "Room is not in the wishlist",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.error("Error updating wishlist:", error);
+    res.status(500).json({
+      message: "Error while updating the wishlist",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllListing,
   getOneListing,
@@ -707,4 +791,6 @@ module.exports = {
   savePrices,
   saveSecurity,
   publishRoom,
+  addToWishlist,
+  removeFromWishlist,
 };

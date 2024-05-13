@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const User = require("../models/user.model");
 const Room = require("../models/room.model");
 const { sendSMS } = require("../utils/SMS/sendSMS");
-const { sendVerificationOTPEmail } = require("../utils/mail/sendOTPVerificationEmail");
+const {
+  sendVerificationOTPEmail,
+} = require("../utils/mail/sendOTPVerificationEmail");
 
 const saltRounds = 10;
 const daysToSeconds = 1 * 60 * 60; //   days * hours *  minutes *  seconds
@@ -808,6 +810,39 @@ const userProfileAbout = async (req, res) => {
   }
 };
 
+// Get the rooms wishlist
+const getRoomsWishlist = async (req, res) => {
+  try {
+    const userId = req.user;
+
+    console.log(userId);
+
+    // find the user
+    const user = await User.findById(userId);
+
+    const roomIds = user.wishlist;
+    // console.log("The users wishList ", roomIds);
+
+    // find the rooms in the rooms Database
+    const rooms = await Room.find({ _id: { $in: roomIds } });
+
+    // console.log("The wishlist", rooms);
+
+    res.status(200).json({
+      message: "Wishlist fetched successfully",
+      success: true,
+      rooms: rooms,
+    });
+  } catch (error) {
+    console.log("Error occured while getting the wishlist of the rooms");
+    res.status(500).json({
+      message: "Error occured while getting the wishlist of the rooms",
+      success: false,
+      error,
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -825,4 +860,5 @@ module.exports = {
   userToHost,
   userProfileDetails,
   userProfileAbout,
+  getRoomsWishlist,
 };

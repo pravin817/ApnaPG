@@ -6,6 +6,7 @@ const {
   getAllReservations,
   getStripePublishableKey,
   createPaymentIntent,
+  getUsersBooking,
 } = require("../controllers/reservationController");
 
 const router = express.Router();
@@ -20,9 +21,12 @@ router.post("/book-room", verifyJwtToken, newReservation);
 router.get("/get-author-reservations", verifyJwtToken, getAuthorReservations);
 
 // Get all reservations
-router.get("/get-reservations", getAllReservations);
+router.get("/get-reservations", verifyJwtToken, getAllReservations);
 
 // Create the payment Intent
 router.post("/create-payment-intent", createPaymentIntent);
+
+// Get the booking list for the user -> student and bachlor's
+router.post("/bookings", verifyJwtToken, getUsersBooking);
 
 module.exports = router;

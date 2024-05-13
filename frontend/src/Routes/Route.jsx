@@ -39,6 +39,8 @@ import VerifyDocuments from "../Pages/VerifyUser/VerifyDocuments";
 import VerifyMobileNo from "../Pages/VerifyUser/VerifyMobileNo";
 import VerifyEmail from "../Pages/VerifyUser/VerifyEmail";
 import VerifyDoc from "../Pages/VerifyUser/VerifyDoc";
+import WishList from "../Pages/UserFeatures/WishList";
+import Booking from "../Pages/UserFeatures/Booking";
 // import VerifyAccount from "../Pages/VerifyAccount";
 
 // import HelloWorld from "../Pages/HelloWorld";
@@ -197,6 +199,15 @@ const router = createBrowserRouter([
             <PaymentConfirmed />
           </Suspense>
         ),
+      },
+
+      {
+        path: "/users/show/wishlist/:id",
+        element: <WishList />,
+      },
+      {
+        path: "/users/show/booking/:id",
+        element: <Booking />,
       },
 
       // The verification section

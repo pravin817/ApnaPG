@@ -17,6 +17,8 @@ const {
   saveSecurity,
   publishRoom,
   savePrices,
+  addToWishlist,
+  removeFromWishlist,
 } = require("../controllers/roomController");
 
 const verifyJwtToken = require("../middlewares/authMiddleware");
@@ -76,5 +78,11 @@ router.post("/save-security", verifyJwtToken, saveSecurity);
 
 // Publish the room || POST
 router.post("/publish-room", verifyJwtToken, publishRoom);
+
+// Add room to wishlist
+router.post("/add-to-wishlist", verifyJwtToken, addToWishlist);
+
+// Remove the room from the wishlist
+router.post("/remove-from-wishlist", verifyJwtToken, removeFromWishlist);
 
 module.exports = router;

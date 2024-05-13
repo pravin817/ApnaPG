@@ -106,3 +106,35 @@ export const userLogOut = () => async (dispatch) => {
   console.log(response);
   dispatch({ type: "USER_LOG_OUT" });
 };
+
+export const addToWishlist = (roomId) => async (dispatch) => {
+  try {
+    const response = await api.post("/room/add-to-wishlist", { roomId });
+    if (response.data.success) {
+      dispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: roomId,
+      });
+    }
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const removeFromWishlist = (roomId) => async (dispatch) => {
+  try {
+    const response = await api.post("/room/remove-from-wishlist", { roomId });
+    if (response.data.success) {
+      dispatch({
+        type: "REMOVE_FROM_WISHLIST",
+        payload: roomId,
+      });
+    }
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

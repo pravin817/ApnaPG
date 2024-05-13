@@ -16,6 +16,7 @@ const {
   verifyPhoneNumber,
   generateOtpCodeForMobile,
   generateOtpCodeForEmail,
+  getRoomsWishlist,
 } = require("../controllers/authController");
 const verifyJwtToken = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -52,4 +53,7 @@ router.post("/refresh-token", refreshToken);
 router.post("/check-email", checkEmail);
 router.post("/profile-details", verifyJwtToken, userProfileDetails);
 router.post("/profile-details-about", verifyJwtToken, userProfileAbout);
+
+// get the rooms wishlist
+router.post("/get-wishlist",verifyJwtToken,getRoomsWishlist)
 module.exports = router;
