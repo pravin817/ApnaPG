@@ -41,6 +41,7 @@ import VerifyEmail from "../Pages/VerifyUser/VerifyEmail";
 import VerifyDoc from "../Pages/VerifyUser/VerifyDoc";
 import WishList from "../Pages/UserFeatures/WishList";
 import Booking from "../Pages/UserFeatures/Booking";
+// import ProtectedRoute from "../Components/ProtectedRoute";
 // import VerifyAccount from "../Pages/VerifyAccount";
 
 // import HelloWorld from "../Pages/HelloWorld";
