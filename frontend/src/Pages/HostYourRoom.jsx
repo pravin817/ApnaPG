@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Faq from "../Components/HostingRoom/Faq";
 import RoomHostingDetails from "../Components/HostingRoom/RoomHostingDetails";
 import Map from "../Components/Map";
 import RoomListingGuide from "../Components/HostingRoom/RoomListingGuide";
 import Apartments from "../Components/HostingRoom/Apartments";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const HostYourRoom = () => {
+  const user = useSelector((state) => state.user.userDetails);
+  console.log("The user is ", user);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login to continue");
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const [latAndLong, setLatAndLong] = useState([]);
   return (
     <main className=" mt-8 md:mt-20 xl:px-20 xl:mx-auto max-w-screen-xl px-8 md:px-12">
