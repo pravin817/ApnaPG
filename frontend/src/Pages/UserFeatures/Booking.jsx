@@ -83,9 +83,12 @@ const Booking = () => {
           <img
             src={backIcon}
             alt="back"
+            onClick={() => {
+              navigate(-1);
+            }}
             className="w-4 mix-blend-darken cursor-pointer hover:rounded-full hover:bg-[#f1f1f1] inline-block"
           />
-          <h5 className="text-[#222222] text-xl font-semibold">Bookings</h5>
+          <h5 className="text-[#222222] text-xl font-semibold">Booking</h5>
         </div>
         <div className="flex flex-col overflow-x-auto">
           <div className="">
@@ -113,7 +116,7 @@ const Booking = () => {
                         Owner Mobile No
                       </th>
                       <th scope="col" className="px-6 py-4">
-                        Onwner Email
+                        Owner Email
                       </th>
                       <th scope="col" className="px-6 py-4">
                         Check In
