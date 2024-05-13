@@ -1,7 +1,10 @@
 import api from "../../backend";
 
 export const newReservation = (data) => async (dispatch) => {
-  console.log("The new reservation data called from the newReservation actions : ", data);
+  console.log(
+    "The new reservation data called from the newReservation actions : ",
+    data
+  );
 
   const reservationData = {
     listingId: data?.listingData?._id,
@@ -23,12 +26,12 @@ export const newReservation = (data) => async (dispatch) => {
 
 export const getAuthorReservations = () => async (dispatch) => {
   try {
-    const response = api.get("/reservations/get-author-reservations");
+    const response = await api.post("/reservations/get-author-reservations");
 
-    if (response.data?.success) {
+    if (response?.data?.success) {
       dispatch({
         type: "AUTHORS_RESERVATIONS",
-        payload: response.data,
+        payload: response?.data?.data,
       });
     }
   } catch (error) {
