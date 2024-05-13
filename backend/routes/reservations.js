@@ -18,7 +18,7 @@ router.get("/config-stripe", getStripePublishableKey);
 router.post("/book-room", verifyJwtToken, newReservation);
 
 // Get author reservations
-router.get("/get-author-reservations", verifyJwtToken, getAuthorReservations);
+router.post("/get-author-reservations", verifyJwtToken, getAuthorReservations);
 
 // Get all reservations
 router.get("/get-reservations", verifyJwtToken, getAllReservations);

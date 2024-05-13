@@ -63,7 +63,7 @@ const newReservation = async (req, res) => {
     if (!user) {
       res.status(404).json({
         message: "User not found",
-        status: false,
+        success: false,
       });
     }
 
@@ -97,7 +97,7 @@ const newReservation = async (req, res) => {
       orderId: orderId,
     };
 
-    const findSavedLisingReservation = await reservation.find({
+    const findSavedLisingReservation = await Reservation.find({
       listingId: listingId,
     });
 
@@ -106,7 +106,7 @@ const newReservation = async (req, res) => {
     });
 
     if (!listing.includes(true)) {
-      const saveReservation = new reservation(newReservation).save();
+      const saveReservation = new Reservation(newReservation).save();
 
       console.log("The room details is: ", listingDetails);
       // console.table([
@@ -141,7 +141,7 @@ const newReservation = async (req, res) => {
     res.status(200).json({
       message: "Error in booking the room",
       error: error,
-      status: false,
+      success: false,
     });
   }
 };
@@ -152,24 +152,27 @@ const getAuthorReservations = async (req, res) => {
     // From the middleware
     const userId = req.user;
 
+    console.log("The user id from the get-author-reservations: ", userId);
+
     const findCriteria = {
       authorId: userId,
     };
 
     // Get the list of the Author reservations
-    const authorReservation = await reservation.find(findCriteria);
+    const authorReservation = await Reservation.find(findCriteria);
 
+    console.log("The author reservations are: ", authorReservation);
     if (!authorReservation) {
       res.status(404).json({
         message: "No reservations found for the author",
-        status: false,
+        success: false,
       });
     }
 
     res.status(200).json({
       message: "Author reservations list",
       data: authorReservation,
-      status: true,
+      success: true,
     });
   } catch (error) {
     console.log(error);
@@ -194,7 +197,7 @@ const getAllReservations = async (req, res) => {
       listingId: listingId,
     };
 
-    const reservations = await reservation.find(findCriteria);
+    const reservations = await Reservation.find(findCriteria);
 
     console.log("The reservations are: ", reservations);
 
