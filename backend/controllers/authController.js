@@ -828,6 +828,14 @@ const getRoomsWishlist = async (req, res) => {
 
     // console.log("The wishlist", rooms);
 
+    // If there are no rooms in wishlist, return 404
+    if (!rooms || rooms.length === 0) {
+      return res.status(200).json({
+        message: "Wishlist not found",
+        success: false,
+      });
+    }
+
     res.status(200).json({
       message: "Wishlist fetched successfully",
       success: true,
