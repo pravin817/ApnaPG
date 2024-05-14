@@ -145,6 +145,7 @@ const Home = () => {
                     data?.map((listing) => {
                       return (
                         <Link
+                          to={`/rooms/${listing?._id}`}
                           key={listing._id}
                           className="flex flex-col gap-3 rounded-xl w-[320px] md:w-[264px] mx-auto"
                         >
