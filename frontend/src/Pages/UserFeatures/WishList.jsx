@@ -26,9 +26,15 @@ const WishList = () => {
           }
         );
 
-        console.log(res.data.rooms);
-        setWishList(res?.data?.rooms);
-        setLoading(false);
+        if (res?.data?.success) {
+          toast.success("Wishlist fetched successfully");
+          console.log(res?.data?.rooms);
+          setWishList(res?.data?.rooms);
+          setLoading(false);
+        } else {
+          toast.error("No room added to wishlist!");
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching wishlist:", error);
         setLoading(false);
