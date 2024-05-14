@@ -66,8 +66,11 @@ const ListingRoomFinalStepPricing = () => {
         <h1 className=" text-[#222222] text-xl sm:text-2xl md:text-[32px] font-medium">
           Now, set your price
         </h1>
-        <p className=" text-sm sm:text-base md:text-lg text-[#717171]">
+        {/* <p className=" text-sm sm:text-base md:text-lg text-[#717171]">
           You can change it anytime.
+        </p> */}
+        <p className="  text-sm sm:text-base md:text-lg text-[#717171]">
+          Enter the base price for the 1 guest for 1 night/day.
         </p>
       </div>
       {/* Price */}
