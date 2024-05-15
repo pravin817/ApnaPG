@@ -21,7 +21,7 @@ router.post("/book-room", verifyJwtToken, newReservation);
 router.post("/get-author-reservations", verifyJwtToken, getAuthorReservations);
 
 // Get all reservations
-router.get("/get-reservations", verifyJwtToken, getAllReservations);
+router.post("/get-reservations", getAllReservations);
 
 // Create the payment Intent
 router.post("/create-payment-intent", createPaymentIntent);

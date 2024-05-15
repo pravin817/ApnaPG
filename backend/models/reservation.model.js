@@ -29,6 +29,15 @@ const reservationSchema = new mongoose.Schema(
     taxes: {
       type: Number,
     },
+    totalBase: {
+      type: Number,
+    },
+    totalTax: {
+      type: Number,
+    },
+    totalPaid: {
+      type: Number,
+    },
     authorEarnedPrice: {
       type: Number,
     },

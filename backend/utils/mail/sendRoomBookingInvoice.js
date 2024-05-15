@@ -9,7 +9,10 @@ const sendRoomBookingInvoice = async (
   nightStaying,
   orderId,
   basePrice,
-  tax
+  tax,
+  totalPaid,
+  totalBase,
+  totalTax
 ) => {
   const transporter = createMailTransporter();
 
@@ -154,7 +157,7 @@ const sendRoomBookingInvoice = async (
                   year: "numeric",
                 })
                 .replace(",", "")}</td>
-              <td>${new Date(checkIn)
+              <td>${new Date(checkOut)
                 .toLocaleDateString("en-US", {
                   day: "2-digit",
                   month: "short",
@@ -170,8 +173,9 @@ const sendRoomBookingInvoice = async (
       <div class="container">
         <div class="total">
           <p>Base Price : <span>INR ${basePrice}</span></p>
-          <p>Tax        : <span>INR ${tax}</span></p>
-          <p>Total      : <span>INR ${basePrice + tax}</span></p>
+          <p>Total Base Price   : <span>INR ${totalBase}</span></p>
+          <p>Total Tax     : <span>INR ${totalTax}</span></p>
+          <p>Total      : <span>INR ${totalPaid}</span></p>
         </div>
       </div>
       <div class="container">

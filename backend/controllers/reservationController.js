@@ -43,104 +43,108 @@ const createPaymentIntent = async (req, res) => {
   }
 };
 
-// Book the new room
+// Book a room
 const newReservation = async (req, res) => {
   try {
     const payload = req.body;
     const userId = req.user;
 
-    const listingId = payload.listingId;
-    const authorId = payload.authorId;
-    const guestNumber = payload.guestNumber;
-    const checkIn = payload.checkIn;
-    const checkOut = payload.checkOut;
-    const nightStaying = payload.nightStaying;
-    const orderId = payload.orderId;
+    const {
+      listingId,
+      authorId,
+      guestNumber,
+      checkIn,
+      checkOut,
+      nightStaying,
+      orderId,
+    } = payload;
 
-    // find the user
+    // Find the user
     const user = await User.findById(userId);
 
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "User not found",
         success: false,
       });
     }
 
-    // console.log("The user is: ", user);
-
     // Find the listing details
-    const findCriteria = {
-      _id: new mongoose.Types.ObjectId(listingId),
-    };
-
-    // Get the listing details -- Room details
-    const listingDetails = await Room.findById(findCriteria);
+    const listingDetails = await Room.findById(listingId);
+    if (!listingDetails) {
+      return res.status(404).json({
+        message: "Listing details not found",
+        success: false,
+      });
+    }
 
     const basePrice = parseInt(listingDetails.basePrice);
-    const tax = Math.round((parseInt(basePrice) * 14) / 100);
-    const authorEarnedPrice =
-      basePrice - Math.round((parseInt(basePrice) * 3) / 100);
+    const tax = Math.round((basePrice * 14) / 100);
+    const authorEarnedPrice = basePrice - Math.round((basePrice * 3) / 100);
 
-    // save the reservation
-    let newReservation = {
+    const totalBase = basePrice * guestNumber * nightStaying;
+    const totalTax = (totalBase * 14) / 100;
+    const totalPaid = totalBase + totalTax;
+
+    // Save the reservation
+    const existingReservation = await Reservation.findOne({
       listingId: listingId,
-      authorId: authorId,
+      checkIn: checkIn,
+    });
+
+    if (existingReservation) {
+      return res.status(400).json({
+        message: "Reservation for this date already exists",
+        success: false,
+      });
+    }
+
+    const newReservation = new Reservation({
+      listingId,
+      authorId,
       bookBy: userId,
       guestNumber: parseInt(guestNumber),
-      checkIn: checkIn,
-      checkOut: checkOut,
+      checkIn,
+      checkOut,
       nightStaying: parseInt(nightStaying),
-      basePrice: basePrice,
+      basePrice,
       taxes: tax,
-      authorEarnedPrice: authorEarnedPrice,
-      orderId: orderId,
-    };
-
-    const findSavedLisingReservation = await Reservation.find({
-      listingId: listingId,
+      totalBase,
+      totalTax,
+      totalPaid,
+      authorEarnedPrice,
+      orderId,
     });
 
-    const listing = findSavedLisingReservation.map((reservation, i) => {
-      return reservation.checkIn === checkIn;
-    });
+    const savedReservation = await newReservation.save();
 
-    if (!listing.includes(true)) {
-      const saveReservation = new Reservation(newReservation).save();
+    console.log("Reservation successfully saved:", savedReservation);
+    // Send booking invoice
+    await sendRoomBookingInvoice(
+      user,
+      listingDetails,
+      guestNumber,
+      checkIn,
+      checkOut,
+      nightStaying,
+      orderId,
+      basePrice,
+      tax,
+      totalPaid,
+      totalBase,
+      totalTax
+    );
 
-      console.log("The room details is: ", listingDetails);
-      // console.table([
-      //   guestNumber,
-      //   checkIn,
-      //   checkOut,
-      //   nightStaying,
-      //   orderId,
-      //   tax,
-      // ]);
-      await sendRoomBookingInvoice(
-        user,
-        listingDetails,
-        guestNumber,
-        checkIn,
-        checkOut,
-        nightStaying,
-        orderId,
-        basePrice,
-        tax
-      );
-      res.status(200).json({
-        message: "Payment confirmed.",
-        success: true,
-        data: saveReservation,
-      });
-    } else {
-      res.status(404).send("Something went wrong try again later.");
-    }
-  } catch (error) {
-    console.log(error);
     res.status(200).json({
+      message: "Reservation successfully created.",
+      success: true,
+      data: savedReservation,
+    });
+  } catch (error) {
+    console.error("Error in booking the room:", error);
+    res.status(500).json({
       message: "Error in booking the room",
-      error: error,
+      error: error.message,
       success: false,
     });
   }
@@ -191,8 +195,6 @@ const getAllReservations = async (req, res) => {
     const userId = req.user;
     const listingId = payload.id;
 
-    console.log("The req body from the get-reservations: ", req.body);
-
     const findCriteria = {
       listingId: listingId,
     };
@@ -204,21 +206,21 @@ const getAllReservations = async (req, res) => {
     if (!reservations) {
       res.status(404).json({
         message: "No reservations found",
-        status: false,
+        success: false,
       });
     }
 
     res.status(200).json({
       message: "All reservations list",
-      data: reservations,
-      status: true,
+      reservations,
+      success: true,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: "Error while getting all reservations",
       error: error,
-      status: false,
+      success: false,
     });
   }
 };
