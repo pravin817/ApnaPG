@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../backend";
 import toast from "react-hot-toast";
 import { FadeLoader } from "react-spinners";
@@ -8,6 +8,11 @@ import { FadeLoader } from "react-spinners";
 const PaymentConfirmed = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [paymentFailed, setPaymentFailed] = useState(false);
+
+  const user = useSelector((state) => state.user.userDetails);
+  console.log("The user details from the payment confirmed is: ", user);
+
+  const navigate = useNavigate();
 
   // Get the data from the search params
   const [searchParams] = useSearchParams();
@@ -41,7 +46,7 @@ const PaymentConfirmed = () => {
 
         console.log("res", res);
 
-        if (res.data.success) {
+        if (res?.data?.success) {
           setIsLoading(false);
           toast.success("Payment Successful");
         }
@@ -82,10 +87,11 @@ const PaymentConfirmed = () => {
               world.
             </p>
           </div>
-          <div className=" px-5 mt-5 max-w-[180px] flex justify-center mx-auto">
+
+          <div className="px-5 mt-5 max-w-[180px] flex justify-center mx-auto">
             <Link
-              to={"/"}
-              className=" bg-[#282828] text-[#ffffff] text-center font-medium block w-full py-2 rounded-md hover:bg-[#000000] transition-colors duration-300"
+              to={`/users/show/booking/${user?._id}`}
+              className="bg-[#282828] text-[#ffffff] text-center font-medium block w-full py-2 rounded-md hover:bg-[#000000] hover:cursor-pointer transition-colors duration-300"
             >
               Continue
             </Link>

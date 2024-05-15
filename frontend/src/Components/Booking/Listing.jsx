@@ -17,18 +17,28 @@ const Listing = ({ searchParamsObj }) => {
   // Night stays
   const nightStaying = searchParamsObj?.nightStaying;
 
+  // Guest Count
+  const guestCount = searchParamsObj?.numberOfGuests;
+  console.log("The guest count is: ", guestCount);
+
   // Calculate the Base price for the room , tax and total price
   const basePrice =
     parseInt(nightStaying) !== 0
       ? parseInt(nightStaying) * listingData?.basePrice
       : listingData?.basePrice;
 
+  // Total price without tax
+  const totalWithoutTax =
+    basePrice === 0
+      ? listingData?.basePrice * guestCount
+      : basePrice * guestCount;
+
   const tax =
-    basePrice !== 0
-      ? Math.round((basePrice * 14) / 100)
+    totalWithoutTax !== 0
+      ? Math.round((totalWithoutTax * 14) / 100)
       : Math.round((listingData?.basePrice * 14) / 100);
 
-  const totalPrice = basePrice + tax;
+  const totalPrice = totalWithoutTax + tax;
 
   return (
     <>
@@ -72,6 +82,15 @@ const Listing = ({ searchParamsObj }) => {
             Your Total{" "}
           </h5>
           <span className="flex flex-row text-base text-[#222] items-center justify-between">
+            {/* Show the base price for the 1 Day/Night */}
+            <p>1 day / night</p>
+            <p className="flex items-center">
+              <PiCurrencyInrBold />
+              {listingData?.basePrice}
+            </p>
+          </span>
+
+          <span className="flex flex-row text-base text-[#222] items-center justify-between">
             {/* Calculate the night /day */}
             {parseInt(nightStaying) === 0 ? (
               <p>1 Day</p>
@@ -83,6 +102,24 @@ const Listing = ({ searchParamsObj }) => {
             <p className="flex items-center">
               <PiCurrencyInrBold />
               {basePrice === 0 ? listingData?.basePrice : basePrice}
+            </p>
+          </span>
+
+          <span className="flex flex-row text-base text-[#222] items-center justify-between">
+            {/* Show the base price for the 1 Day/Night */}
+            <p>Guest count </p>
+            <p className="flex items-center">
+              {/* <PiCurrencyInrBold /> */}
+              {guestCount}
+            </p>
+          </span>
+          <hr className="w-full h-[1.3px] bg-[#dddddd] my-2" />
+
+          <span className="flex flex-row items-center justify-between text-base text-[#222]">
+            <p>Total without tax : </p>
+            <p className="flex items-center">
+              <PiCurrencyInrBold />
+              {totalWithoutTax}
             </p>
           </span>
 

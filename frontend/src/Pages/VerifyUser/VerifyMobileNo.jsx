@@ -75,6 +75,7 @@ const VerifyMobileNo = () => {
 
       if (response.data.success) {
         navigate(-1);
+        window.location.reload();
       } else {
         window.location.reload();
       }

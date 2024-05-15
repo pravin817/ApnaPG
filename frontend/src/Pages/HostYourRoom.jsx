@@ -9,17 +9,17 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const HostYourRoom = () => {
-  const user = useSelector((state) => state.user.userDetails);
-  console.log("The user is ", user);
+  // const user = useSelector((state) => state.user.userDetails);
+  // console.log("The user is ", user);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      toast.error("Please login to continue");
-      navigate("/");
-    }
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     toast.error("Please login to continue");
+  //     navigate("/");
+  //   }
+  // }, [user, navigate]);
 
   const [latAndLong, setLatAndLong] = useState([]);
   return (

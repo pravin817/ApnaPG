@@ -15,9 +15,8 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css";
 
+/* eslint-disable react/prop-types */
 const ReservationCard = ({ listingData }) => {
-  // console.log("The listing data in the reservation card : ", listingData);
-
   // ref
   const calendarRef = useRef();
   const dropdownRef = useRef();
@@ -32,9 +31,9 @@ const ReservationCard = ({ listingData }) => {
     useOutsideClick(dropdownRef);
 
   // Guest state
-  const [guestsNumber, setGuestsNumber] = useState(0);
-  const [childrenNumber, setChildrenNumber] = useState(0);
-  const [totalGuest, settotalGuest] = useState(guestsNumber + childrenNumber);
+  // const [guestsNumber, setGuestsNumber] = useState(0);
+  // const [childrenNumber, setChildrenNumber] = useState(0);
+  const [totalGuest, settotalGuest] = useState(1);
   const [reservations, setReservations] = useState([]);
 
   // Pricing state
@@ -99,8 +98,10 @@ const ReservationCard = ({ listingData }) => {
         id: listingData?._id,
       });
 
-      if (res.data.success) {
-        setReservations(res.data.reservations);
+      console.log("The reservations data : ", res.data.reservations);
+
+      if (res?.data?.success) {
+        setReservations(res?.data?.reservations);
       }
 
       console.log("The reservations data : ", res.data.reservations);
@@ -119,7 +120,12 @@ const ReservationCard = ({ listingData }) => {
     const finalNight = calculatedNights === 0 ? 1 : calculatedNights;
 
     // calculate the base price
-    const calculatedbasePrice = listingData?.basePrice * finalNight;
+    // const calculatedbasePrice = listingData?.basePrice * finalNight;
+
+    const calculatedbasePrice =
+      totalGuest >= 1
+        ? listingData?.basePrice * finalNight * totalGuest
+        : listingData?.basePrice * finalNight;
 
     // Now Apply the tax on the calculatedbasePrice which is 14%
     const calculatedTaxes = Math.round((calculatedbasePrice * 14) / 100);
@@ -145,12 +151,12 @@ const ReservationCard = ({ listingData }) => {
     setTax(calculatedTaxes);
     setAuthorEarned(calculatedAuthorEarnings); // Room owners earning to dashboard
     setNightsStaying(calculatedNights);
-  }, [selectedDates, listingData?.basePrice]);
+  }, [selectedDates, listingData?.basePrice, totalGuest]);
 
   // update the total guests
-  useEffect(() => {
-    settotalGuest(guestsNumber + childrenNumber);
-  }, [guestsNumber, childrenNumber]);
+  // useEffect(() => {
+  //   settotalGuest(guestsNumber + childrenNumber);
+  // }, [guestsNumber, childrenNumber]);
 
   // Fire the reservations data
   useEffect(() => {
@@ -198,6 +204,19 @@ const ReservationCard = ({ listingData }) => {
 
     return dates;
   }, []);
+
+  // Function to handle incrementing guests number
+  const handleIncrementGuests = () => {
+    settotalGuest((prev) => prev + 1);
+  };
+
+  // Function to handle decrementing guests number
+  const handleDecrementGuests = () => {
+    // Ensure guestsNumber doesn't go below 0
+    if (totalGuest > 1) {
+      settotalGuest((prev) => prev - 1);
+    }
+  };
 
   return (
     <div className="border w-full border-[#dddddd]  min-h-[315px] rounded-xl sticky top-32 shadow p-6 ">
@@ -297,21 +316,17 @@ const ReservationCard = ({ listingData }) => {
               {/* icons */}
               <span className=" flex flex-row-reverse items-center gap-2">
                 <button
-                  onClick={() => {
-                    setGuestsNumber((prev) => prev + 1);
-                  }}
+                  onClick={handleIncrementGuests}
                   disabled={listingData?.floorPlan?.guests === totalGuest}
                   className={` p-2 rounded-full border border-[#c0c0c0] opacity-90 disabled:cursor-not-allowed disabled:opacity-20`}
                 >
                   <AiOutlinePlus size={16} />
                 </button>
-                <p className=" w-[30px] flex justify-center">{guestsNumber}</p>
+                <p className=" w-[30px] flex justify-center">{totalGuest}</p>
 
                 <button
-                  onClick={() => {
-                    setGuestsNumber((prev) => prev - 1);
-                  }}
-                  disabled={guestsNumber === 1}
+                  onClick={handleDecrementGuests}
+                  disabled={totalGuest === 1}
                   className=" p-2 rounded-full border border-[#c0c0c0] disabled:cursor-not-allowed disabled:opacity-20"
                 >
                   <AiOutlineMinus size={16} />
@@ -344,7 +359,7 @@ const ReservationCard = ({ listingData }) => {
             }}
             className="capitalize py-3 w-full bg-[#ff385c] hover:bg-[#d90b63] transition duration-200 ease-in text-white font-medium text-sm rounded-md"
           >
-            reserve
+            Reserve
           </button>
         </div>
       )}
