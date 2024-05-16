@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-
 import {
   PaymentElement,
   useElements,
@@ -11,9 +10,12 @@ import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 
-
 const Payment = ({ searchParamsObj }) => {
   console.log("The search params obj is: ", searchParamsObj);
+
+  const user = useSelector((state) => state.user.userDetails);
+  const navigate = useNavigate();
+  console.log("The Verification Routes called,", user);
 
   // get the reservations data
   const newReservationsData = useSelector(
@@ -73,8 +75,6 @@ const Payment = ({ searchParamsObj }) => {
 
   const orderId = Math.round(Math.random() * 10000000000);
   console.log("The order id is: ", orderId);
-  const navigate = useNavigate();
-
 
   // const handlePayment = async (e) => {
   //   e.preventDefault();
@@ -103,11 +103,37 @@ const Payment = ({ searchParamsObj }) => {
   const handlePayment = async (e) => {
     e.preventDefault();
 
-    // Construct the URL for payment confirmation
-    const paymentConfirmationURL = `${window.location.origin}/payment-confirmed?guestNumber=${guestNumber}&checkIn=${checkin}&checkOut=${checkout}&listingId=${listingData?._id}&authorId=${listingData?.author}&nightStaying=${nightStaying}&orderId=${orderId}`;
+    if (user) {
+      if (
+        !user.emailVerification.verified ||
+        !user.mobileVerification.verified
+      ) {
+        const toastId = toast.error(
+          "Please verify your email and mobile number before proceeding further."
+        );
 
-    // Redirect to the payment confirmation page
-    window.location.href = paymentConfirmationURL;
+        setTimeout(() => {
+          toast.dismiss(toastId);
+          const redirectToastId = toast.success(
+            "Redirecting for verification..."
+          );
+          setTimeout(() => {
+            toast.dismiss(redirectToastId);
+            navigate(`/users/show/${user?._id}/verify-account`);
+          }, 1500);
+        }, 2500);
+      } else {
+        // Construct the URL for payment confirmation
+        const paymentConfirmationURL = `${window.location.origin}/payment-confirmed?guestNumber=${guestNumber}&checkIn=${checkin}&checkOut=${checkout}&listingId=${listingData?._id}&authorId=${listingData?.author}&nightStaying=${nightStaying}&orderId=${orderId}`;
+
+        // Redirect to the payment confirmation page
+        window.location.href = paymentConfirmationURL;
+      }
+    } else {
+      toast.error("Please login!");
+      // navigate("/"); // Redirecting to the login page
+      return null; // Return null to prevent rendering
+    }
   };
 
   return (

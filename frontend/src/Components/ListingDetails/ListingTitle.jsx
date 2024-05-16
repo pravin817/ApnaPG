@@ -92,7 +92,10 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // import { addToWishlist, removeFromWishlist } from "../../actions/userActions";
 import toast from "react-hot-toast";
-import { addToWishlist, removeFromWishlist } from "../../redux/actions/userActions";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/userActions";
 
 const ListingTitle = ({ listingData }) => {
   const { id } = useParams();
@@ -107,6 +110,11 @@ const ListingTitle = ({ listingData }) => {
   }, [user, id]);
 
   const handleAddToWishList = async () => {
+    if (!user) {
+      toast.error("Please login In..");
+      return;
+    }
+
     setIsSaved((prev) => !prev);
 
     if (id) {
@@ -163,4 +171,3 @@ const ListingTitle = ({ listingData }) => {
 };
 
 export default ListingTitle;
-

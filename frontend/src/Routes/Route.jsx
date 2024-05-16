@@ -633,8 +633,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment-confirmed",
-        // element: <PaymentConfirmed />,
-        element: <VerificationRoutes component={PaymentConfirmed} />,
+        element: <PaymentConfirmed />,
+        // element: <VerificationRoutes component={PaymentConfirmed} />,
       },
       {
         path: "/help",

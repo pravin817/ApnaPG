@@ -152,7 +152,7 @@ const Navbar = () => {
 
         {/* if not in the booking page then show the options 👇 */}
         {inBookingPage ? (
-          <div> </div>
+          <div className=" flex items-center justify-start w-1/4 h-full"></div>
         ) : (
           <>
             {/* searchbar */}
@@ -240,7 +240,123 @@ const Navbar = () => {
 
         {/* if in the booking page don't show any option 👇  */}
         {inBookingPage ? (
-          <div> </div>
+          <div className="flex justify-end ">
+            <div
+              className="border-[1px] bg-white border-[#dddddd] rounded-full py-1 px-2 flex flex-row gap-3 hover:shadow-md transition-all cursor-pointer relative"
+              onClick={() => {
+                setShowUserMenu((preValue) => !preValue);
+              }}
+            >
+              <img src={hamburgerMenu} alt="User Menu" className="w-4" />
+
+              {/* show the user name based on the condition */}
+              {user ? (
+                <p className=" bg-[#222222] text-[#efefef] px-3 py-2 rounded-full text-xs">
+                  {user.name?.firstName?.slice(0, 1)}
+                </p>
+              ) : (
+                <img src={userProfile} alt="User Profile" className="w-8" />
+              )}
+            </div>
+
+            {/* show the below user menu if the user is not login */}
+            {showUserMenu ? (
+              <div>
+                {!user ? (
+                  <div
+                    ref={userMenuRef}
+                    className="shadow-md absolute right-9 top-[74px] bg-[#ffffff] border-[1px] border-[#dddddd] rounded-lg flex flex-col py-2 w-[230px] transition-all user-menu"
+                  >
+                    <Link
+                      className="font-medium"
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        setPopup(true);
+                      }}
+                    >
+                      Sign up
+                    </Link>
+                    <Link
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        setPopup(true);
+                      }}
+                    >
+                      Login
+                    </Link>
+                    <hr className="h-[1.5px] bg-[#ddddd] my-1" />
+                    <Link to={"/host/rooms"}>Rent your Room</Link>
+                    <Link to={"/help"}>Help</Link>
+                  </div>
+                ) : (
+                  // Logged In User Menu
+                  <div
+                    ref={userMenuRef}
+                    className="shadow-md absolute right-9 top-[70px] bg-[#ffffff] border-[1px] border-[#dddddd] rounded-lg flex flex-col py-2 w-[230px] transition-all user-menu z-10000"
+                    onClick={() => {
+                      setShowUserMenu((prev) => !prev);
+                    }}
+                  >
+                    {user?.role === "host" || user?.role === "admin" ? (
+                      <>
+                        {!inUserDashboard ? (
+                          <Link
+                            to={`/users/dashboard/${user._id}/overview=true`}
+                            onClick={() => {
+                              JSON.stringify(
+                                sessionStorage.setItem("activePage", 1)
+                              );
+                            }}
+                            className="font-medium"
+                          >
+                            Dashboard
+                          </Link>
+                        ) : (
+                          <Link className="font-medium" to={"/"}>
+                            Home
+                          </Link>
+                        )}
+                      </>
+                    ) : (
+                      <Link className="font-medium">Notifications</Link>
+                    )}
+
+                    <Link
+                      to={`/users/show/booking/${userId}`}
+                      className="font-medium"
+                    >
+                      Bookings
+                    </Link>
+                    <Link
+                      to={`/users/show/wishlist/${userId}`}
+                      className="font-medium"
+                    >
+                      WishLists
+                    </Link>
+
+                    <hr className="h-[1.5px] bg-[#dddddd] my-1" />
+                    <Link to={"/host/rooms"}>Rent Your Room</Link>
+                    <Link to={`/users/show/${userId}/verify-account`}>
+                      Verify Account
+                    </Link>
+                    <Link to={`/users/show/${user._id}`}>Account</Link>
+                    <hr className="h-[1.5px] bg-[#dddddd] my-1" />
+                    <Link to={"/help"}>Help</Link>
+                    <Link
+                      onClick={() => {
+                        handleLogOut();
+
+                        // Reload the page to avoid the UX issues
+                        // window.reload();
+                      }}
+                    >
+                      Log Out
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
         ) : (
           <>
             {/* If the user in the host Room landing page then show the different options  */}

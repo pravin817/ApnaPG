@@ -84,7 +84,7 @@ const Booking = () => {
             src={backIcon}
             alt="back"
             onClick={() => {
-              navigate(-1);
+              navigate("/");
             }}
             className="w-4 mix-blend-darken cursor-pointer hover:rounded-full hover:bg-[#f1f1f1] inline-block"
           />
