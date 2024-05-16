@@ -7,7 +7,7 @@ const RoomListingGuide = () => {
   return (
     <section className="my-8 md:my-20 flex flex-col gap-10">
       <h1 className=" text-2xl md:text-4xl font-medium text-center ">
-        Host you Room easily with ApnaPG Setup
+        Host your Room easily with ApnaPG Setup
       </h1>
 
       <img src={setup} alt="setUp" />
