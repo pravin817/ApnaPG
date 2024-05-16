@@ -570,15 +570,18 @@ const router = createBrowserRouter([
       },
       {
         path: "/users/dashboard/:id/overview=true",
-        element: <DashboardRoutes component={Overview} />,
+        element: <Overview />,
+        // element: <DashboardRoutes component={Overview} />,
       },
       {
         path: "/users/dashboard/:id/reservations",
-        element: <DashboardRoutes component={Reservations} />,
+        element: <Reservations />,
+        // element: <DashboardRoutes component={Reservations} />,
       },
       {
         path: "/users/dashboard/:id/listing=true",
-        element: <DashboardRoutes component={Listing} />,
+        element: <Listing />,
+        // element: <DashboardRoutes component={Listing} />,
       },
       {
         path: "/users/show/:id",
