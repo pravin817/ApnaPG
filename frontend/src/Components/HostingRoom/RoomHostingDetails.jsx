@@ -2,7 +2,6 @@ import { useState } from "react";
 import search from "../../assets/BasicIcon/searchRed.svg";
 import { PiCurrencyInrBold } from "react-icons/pi";
 
-
 const RoomHostingDetails = () => {
   const ratePerNight = 100;
   const [perNight, setPerNight] = useState(1);
@@ -69,7 +68,7 @@ const RoomHostingDetails = () => {
 
       {/* how the pricing is determined  */}
       <p className="text-xs md:text-sm text-[#717171] underline font-medium text-center">
-        Learn how we estimates you earnings
+        Learn how we estimates Your earnings
       </p>
       {/* selected places */}
       {/* <div className=" flex flex-row gap-4 items-center min-w-[300px] md:min-w-[400px] rounded-full border border-[#dddddd] mx-auto mt-3 px-7 py-3 cursor-pointer">
