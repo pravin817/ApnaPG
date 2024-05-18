@@ -39,7 +39,7 @@ const VerifyEmail = () => {
         { email },
         { headers: { "Content-Type": "application/json" } }
       );
-      toast.success(response.data.message);
+      toast.success(response?.data?.message);
       setIsCodeSent(true);
     } catch (error) {
       console.error("Error sending verification code:", error);
@@ -54,9 +54,9 @@ const VerifyEmail = () => {
         { otp: verificationCode },
         { headers: { "Content-Type": "application/json" } }
       );
-      if (response.data.success) {
+      if (response?.data?.success) {
         toast.success(response.data.message);
-        navigate(-1);
+        navigate(`/users/show/${userDetails._id}/verify-account`);
       } else {
         toast.error(response.data.message);
         window.location.reload();

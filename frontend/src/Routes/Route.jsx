@@ -547,6 +547,7 @@ import ProtectedRoute from "../utils/ProtectedRoute";
 import VerificationRoutes from "../utils/VerificationRoutes";
 import BecomeHostRoutes from "../utils/BecomeHostRoutes";
 import DashboardRoutes from "../utils/DashboardRoutes";
+import SearchRoom from "../Pages/SearchRoom";
 // import ProtectedRoute from "../utils/ProtectedRoute";
 // import ProtectedRoute from "../Components/ProtectedRoute";
 
@@ -638,6 +639,10 @@ const router = createBrowserRouter([
         path: "/payment-confirmed",
         element: <PaymentConfirmed />,
         // element: <VerificationRoutes component={PaymentConfirmed} />,
+      },
+      {
+        path: "/search",
+        element: <SearchRoom />,
       },
       {
         path: "/help",

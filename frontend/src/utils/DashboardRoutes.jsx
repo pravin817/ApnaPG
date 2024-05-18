@@ -4,13 +4,24 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 const DashboardRoutes = ({ component: Component, ...rest }) => {
   const user = useSelector((state) => state.user.userDetails);
- console.log("The DashboardRoutes called,", user);
+  const navigate = useNavigate();
+  console.log("The DashboardRoutes called,", user);
   if (user) {
     if (!user.emailVerification.verified || !user.mobileVerification.verified) {
-      toast.error(
+      const toastId = toast.error(
         "Please verify your email and mobile number before proceeding further."
       );
-      return <Navigate to="/host/rooms" />;
+
+      setTimeout(() => {
+        toast.dismiss(toastId);
+        const redirectToastId = toast.success(
+          "Redirecting for verification..."
+        );
+        setTimeout(() => {
+          toast.dismiss(redirectToastId);
+          navigate(`/users/show/${user?._id}/verify-account`);
+        }, 1500);
+      }, 2500);
     } else {
       if (user?.role === "host") {
         return <Component {...rest} />;

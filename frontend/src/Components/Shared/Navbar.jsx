@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaMinusCircle, FaPlusCircle, FaSearch } from "react-icons/fa";
 import { FaHouseDamage } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,11 +14,58 @@ import searchIcon from "../../assets/BasicIcon/Search.svg";
 import hamburgerMenu from "../../assets/BasicIcon/HamburgerMenu.svg";
 import userProfile from "../../assets/BasicIcon/UserProfile.png";
 import house from "../../assets/BasicIcon/houseWhite.png";
+import { IoIosCloseCircle } from "react-icons/io";
 
 import AuthenticationPopUp from "../PopUp/authentication/AuthenticationPopUp";
 import DashboardMenu from "./DashboardMenu";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { DateRange } from "react-date-range";
+import { Country, State, City } from "country-state-city";
 
 const Navbar = () => {
+  // refs
+  const calendarRef = useRef();
+  const dropdownRef = useRef();
+  const cityPopupRef = useRef();
+  const guestPopupRef = useRef();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // handling outside click
+  const { state: calendarState, setState: setCalendarState } =
+    useOutsideClick(calendarRef);
+  const { state: showDropdown, setState: setShowDropdown } =
+    useOutsideClick(dropdownRef);
+  const { state: showCityPopup, setState: setShowCityPopup } =
+    useOutsideClick(cityPopupRef);
+  const { state: showGuestPopup, setState: setShowGuestPopup } =
+    useOutsideClick(guestPopupRef);
+
+  // dates saving and showing to the dateRange calendar calculation here
+  const [selectedDates, setSelectedDates] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+
+  // Formatted dates to store in DB
+  const formattedStartDate = selectedDates[0]?.startDate?.toISOString();
+  const formattedEndDate = selectedDates[0]?.endDate?.toISOString();
+
+  // Convert the formatted dated to local dates for the user to see
+  const localStartDate = new Date(formattedStartDate).toLocaleDateString();
+  const localEndDate = new Date(formattedEndDate).toLocaleDateString();
+
+  // Handle the date selection
+  const handleSelect = (date) => {
+    setSelectedDates([date.selection]);
+  };
+
+  const [totalGuest, setTotalGuest] = useState(1);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [popup, setPopup] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,10 +73,37 @@ const Navbar = () => {
   const [hideSmallSearch, setHideSmallSearch] = useState(true);
 
   // Search
-  const [city, setCity] = useState("");
+  // const [city, setCity] = useState("Karad");
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
-  const [guestCount, setGuestCount] = useState("");
+  // const [guestCount, setGuestCount] = useState(0);
+
+  const [city, setCity] = useState("");
+  const [guestCount, setGuestCount] = useState(1);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    // Fetch all cities from the Country 'IN' (India)
+    const allCities = City.getCitiesOfCountry("IN");
+    setCities(allCities);
+  }, []);
+
+  // Filter cities based on the input search text
+  const filteredCities = cities.filter((c) =>
+    c.name.toLowerCase().startsWith(city.toLowerCase())
+  );
+
+  const handleCitySelect = (selectedCity) => {
+    setCity(selectedCity);
+    setShowCityPopup(false);
+    // You can perform additional actions here, such as fetching data based on the selected city.
+  };
+
+  const handleGuestCountChange = (count) => {
+    setGuestCount(count);
+    setShowGuestPopup(false);
+    // You can perform additional actions here, such as updating the UI based on the selected guest count.
+  };
 
   const handleSearchClick = () => {
     setSearchPopupOpen(true);
@@ -39,7 +113,6 @@ const Navbar = () => {
     setSearchPopupOpen(false);
   };
 
-  const navigate = useNavigate();
   const userMenuRef = useRef(null);
   const location = useLocation();
   const pathName = location.pathname;
@@ -59,8 +132,6 @@ const Navbar = () => {
   const userId = user?._id;
   // console.log("The user Id is ", userId);
 
-  const dispatch = useDispatch();
-
   const handleLogOut = () => {
     dispatch(userLogOut());
   };
@@ -68,7 +139,7 @@ const Navbar = () => {
   // get the user details
   useEffect(() => {
     dispatch(getUser());
-  }, []);
+  }, [dispatch]);
 
   // Close the user menu when clicked outside of the menu
   useEffect(() => {
@@ -83,33 +154,11 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleCitySelect = (selectedCity) => {
-    setCity(selectedCity);
-    // Close the city dropdown or perform other actions
-  };
-
   const handleSearch = () => {
-    // Perform search with selected parameters
+    navigate(
+      `/search?city=${city}&guests=${guestCount}&checkIn=${formattedStartDate}&checkOut=${formattedEndDate}`
+    );
   };
-
-  // UseEffect for the scroll
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const scrollPosition = window.scrollY;
-  //     // console.log("scrollPosition : ", scrollPosition);
-  //     if (scrollPosition > 10) {
-  //       setShowExtendedSearch(false);
-  //     } else {
-  //       setShowExtendedSearch(true);
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [showExtendedSearch]);
 
   return (
     <nav
@@ -161,78 +210,69 @@ const Navbar = () => {
               <div>{inUserDashboard && <DashboardMenu />} </div>
             ) : (
               <div className="lg:block hidden">
-                <div className="px-1 py-2 flex items-center justify-between transition-all cursor-pointer">
-                  <div className="flex flex-col w-full  transition duration-200">
-                    {/* The main search bar  */}
-
-                    <div
-                      className="w-[100%] mx-auto cursor-pointer"
-                      onClick={() => {
-                        setHideSmallSearch((prev) => !prev);
-                      }}
-                    >
-                      <div className="flex items-center justify-between border-[1px] border-[#dddddd] bg-white rounded-lg px-3 py-2 shadow hover:shadow-md transition-all cursor-pointer">
-                        <p className="text-sm">
-                          <span className="font-semibold px-2">Anywhere</span>{" "}
-                          <span className="text-white"> | </span>{" "}
-                          <span className="font-semibold px-2">Any week</span>{" "}
-                          <span className="text-gray-400"> | </span>{" "}
-                          <span className="px-2 text-gray-400">Add guests</span>{" "}
+                <div className="flex items-center justify-between transition-all cursor-pointer">
+                  <div className="flex flex-col w-full transition duration-200">
+                    <div className=" flex justify-between items-center border bg-white w-full rounded-lg m-0">
+                      {/* Location */}
+                      <div
+                        className="px-3 py-3 ml-1"
+                        onClick={() => setShowCityPopup(true)}
+                      >
+                        <p className="text-[10px] text-black font-semibold uppercase">
+                          Location
                         </p>
-                        {/* <button className=" rounded-full  bordeinline-block p-1">
-                                <img
-                                  src={searchIcon}
-                                  alt="Search"
-                                  className="w-5 text-black"
-                                />
-                            </button> */}
-                        <div className="borderinline-block p-1">
-                          <FaSearch className="w-5 text-black" />
+                        <p className="text-sm text-[#222222]">
+                          {city === "" ? "Karad" : city}
+                        </p>
+                      </div>
+
+                      <div className="  w-2/4 min-h[60px] relative flex flex-col">
+                        <div
+                          onClick={() => {
+                            setCalendarState((prev) => !prev);
+                          }}
+                          className="grid grid-cols-2 cursor-pointer"
+                        >
+                          <div className="px-3 py-3 border-l-2">
+                            <p className="text-[10px] text-black font-semibold uppercase">
+                              Check-in
+                            </p>
+                            <p className="text-sm text-[#222222]">
+                              {localStartDate}
+                            </p>
+                          </div>
+
+                          <div className="px-3 py-3 border-l-2">
+                            <p className="text-[10px] text-black font-semibold uppercase">
+                              Checkout
+                            </p>
+                            <p className="text-sm text-[#222222]">
+                              {localEndDate}
+                            </p>
+                          </div>
                         </div>
+                      </div>
+
+                      {/* Guest Count */}
+                      <div
+                        className="px-3 py-3 border-l-2"
+                        onClick={() => setShowGuestPopup(true)}
+                      >
+                        <p className="text-[10px] text-black font-semibold uppercase">
+                          {guestCount === 1 ? "Guest" : "Guests"}
+                        </p>
+                        <p className="text-sm text-[#222222]">{guestCount}</p>
+                      </div>
+
+                      <div
+                        onClick={handleSearch}
+                        className="flex justify-center items-center bg-[#003B95] px-3 py-3 rounded-tr-lg rounded-br-lg mr-2"
+                      >
+                        <FaSearch className="text-white" />
                       </div>
                     </div>
                   </div>
                 </div>
-
-                {/* The extended search bar  */}
-                {/* {(showExtendedSearch || hideSmallSearch) && (
-                  <div className="mt-10">
-                    <div className="w-5/4 mx-auto">
-                      <div className="flex items-center justify-between border-[1px] border-[#dddddd] rounded-full px-3 py-1 shadow hover:shadow-md transition-all cursor-pointer">
-                        <input
-                          type="text"
-                          placeholder="AnyWhere"
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          className="text-sm py-2 w-24 focus:border-[#ff385c] focus:outline-none pl-2  text-black"
-                        />
-                        <span className="text-gray-400">|</span>
-
-                        <input
-                          type="text"
-                          placeholder="AnyWhere"
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          className="text-sm py-2 w-24 focus:border-[#ff385c] focus:outline-none pl-2  text-black"
-                        />
-                        <span className="text-gray-400">|</span>
-                        <input
-                          type="text"
-                          placeholder="Add guest"
-                          value={guestCount}
-                          onChange={(e) => setGuestCount(e.target.value)}
-                          className="text-sm py-2 w-24 focus:border-[#ff385c] focus:outline-none pl-2"
-                        />
-                        <button
-                          className="bg-[#ff385c] rounded-full p-2"
-                          onClick={handleSearch}
-                        >
-                          <img src={searchIcon} alt="Search" className="w-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
               </div>
             )}
           </>
@@ -516,6 +556,108 @@ const Navbar = () => {
           </>
         )}
       </div>
+      {/* Check in-out calendar */}
+      <div
+        ref={calendarRef}
+        className="absolute top-[90px] left-1/2 transform -translate-x-1/2 border-neutral-200 shadow-md"
+      >
+        {calendarState && (
+          <div className="mx-auto top-1">
+            <DateRange
+              className="rounded-xl shadow-2xl"
+              ranges={selectedDates}
+              onChange={handleSelect}
+              minDate={new Date()}
+              rangeColors={["#003B95"]}
+              direction="horizontal"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* City Selection Popup */}
+      {showCityPopup && (
+        <div
+          ref={cityPopupRef}
+          className="absolute top-[90px] left-[32%] transform -translate-x-1/2 bg-white p-4 rounded-lg w-[280px]"
+        >
+          <div className="">
+            <h3 className="text-lg font-semibold mb-4">Select a City</h3>
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Search city..."
+              className="w-full border border-gray-300 rounded-md p-2 mb-4"
+            />
+            <ul className="max-h-64 overflow-y-auto">
+              {filteredCities.map((city) => (
+                <li
+                  key={city.name}
+                  className="cursor-pointer py-2 px-4 hover:bg-gray-100"
+                  onClick={() => handleCitySelect(city.name)}
+                >
+                  {city.name}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 px-4 py-2 bg-[#003B95] text-white rounded-lg"
+              onClick={() => setShowCityPopup(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Guest Count Popup */}
+      {showGuestPopup && (
+        <div
+          ref={guestPopupRef}
+          className="absolute top-[90px] left-[66%] transform -translate-x-1/2 bg-white p-4 rounded-lg w-[280px]"
+        >
+          <div className="">
+            <div className="flex items-center justify-between h-[30px] ">
+              <h3 className="text-lg font-semibold "> Guest</h3>
+              <div className="flex items-center justify-center space-x-4 ">
+                <button
+                  className="px-3 py-2 bg-gray-200 rounded-lg"
+                  onClick={() => setGuestCount((prev) => Math.max(prev - 1, 1))}
+                >
+                  <FaMinusCircle />
+                </button>
+                <span className="text-lg">{guestCount}</span>
+                <button
+                  className="px-3 py-2 bg-gray-200 rounded-lg"
+                  onClick={() => setGuestCount((prev) => prev + 1)}
+                >
+                  <FaPlusCircle />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Search */}
+      {/* {isSmallDevice && (
+        <div className="flex justify-center items-center py-2 px-5">
+          <div
+            className="flex items-center justify-between w-full bg-white rounded-lg py-2 px-3"
+            onClick={handleSearchClick}
+          >
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full border-none focus:outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <FaSearch className="text-gray-500" />
+          </div>
+        </div>
+      )} */}
       <AuthenticationPopUp popup={popup} setPopup={setPopup} />
     </nav>
   );

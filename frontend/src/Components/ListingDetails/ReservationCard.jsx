@@ -30,9 +30,6 @@ const ReservationCard = ({ listingData }) => {
   const { state: showDropdown, setState: setShowDropdown } =
     useOutsideClick(dropdownRef);
 
-  // Guest state
-  // const [guestsNumber, setGuestsNumber] = useState(0);
-  // const [childrenNumber, setChildrenNumber] = useState(0);
   const [totalGuest, settotalGuest] = useState(1);
   const [reservations, setReservations] = useState([]);
 
@@ -153,10 +150,6 @@ const ReservationCard = ({ listingData }) => {
     setNightsStaying(calculatedNights);
   }, [selectedDates, listingData?.basePrice, totalGuest]);
 
-  // update the total guests
-  // useEffect(() => {
-  //   settotalGuest(guestsNumber + childrenNumber);
-  // }, [guestsNumber, childrenNumber]);
 
   // Fire the reservations data
   useEffect(() => {

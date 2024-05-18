@@ -89,9 +89,7 @@ const Home = () => {
         {/* Category section  */}
         {/* <Category styleGrid={"md:col-span-8 lg:col-span-9"} /> */}
         <Category styleGrid={"md:col-span-12 lg:col-span-12"} />
-
         <hr />
-
         {/* Tax toggle buttons  */}
         {/* <PriceWithTaxCard
           style={

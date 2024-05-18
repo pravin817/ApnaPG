@@ -9,12 +9,7 @@ const BecomeHostRoutes = ({ component: Component, ...rest }) => {
   const navigate = useNavigate();
 
   if (user) {
-    if (
-      user.emailVerification &&
-      user.mobileVerification &&
-      !user.emailVerification.verified &&
-      !user.mobileVerification.verified
-    ) {
+    if (!user.emailVerification.verified || !user.mobileVerification.verified) {
       const toastId = toast.error(
         "Please verify your email and mobile number before proceeding further."
       );

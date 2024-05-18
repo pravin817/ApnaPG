@@ -47,8 +47,13 @@ const PaymentConfirmed = () => {
         console.log("res", res);
 
         if (res?.data?.success) {
+          setPaymentFailed(false);
           setIsLoading(false);
-          toast.success("Payment Successful");
+          toast.success("The room is successfully booked.");
+        } else {
+          setIsLoading(false);
+          setPaymentFailed(true);
+          toast.error(res.data.message);
         }
       };
       roomBooking();
@@ -58,12 +63,12 @@ const PaymentConfirmed = () => {
     }
   }, []);
 
-  // if (isLoading)
-  //   return (
-  //     <div className="flex flex-col justify-center items-center w-full h-[60dvh]">
-  //       <FadeLoader color="#000" />
-  //     </div>
-  //   );
+  if (isLoading)
+    return (
+      <div className="flex flex-col justify-center items-center w-full h-[60dvh]">
+        <FadeLoader color="#000" />
+      </div>
+    );
 
   return (
     <div className=" min-w-md mx-auto text-center ">
@@ -78,8 +83,8 @@ const PaymentConfirmed = () => {
             {/* Show the message based on the payment status */}
             <h4 className=" text-2xl font-semibold">
               {paymentFailed
-                ? "Your payment failed. try again"
-                : "Your payment is confirmed."}
+                ? "Your booking failed. try again"
+                : "Your booking is confirmed."}
             </h4>
 
             <p className=" text-center text-sm">

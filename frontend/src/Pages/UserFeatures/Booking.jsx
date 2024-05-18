@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../backend";
 import toast from "react-hot-toast";
-import { FaSpinner } from "react-icons/fa";
+import { FaDownload, FaSpinner } from "react-icons/fa";
 import backIcon from "../../assets/BasicIcon/backIcon.png";
 import {
   PDFDownloadLink,
@@ -68,6 +68,32 @@ const Booking = () => {
     fetchBooking();
   }, []);
 
+  const handleCancelBooking = async (bookingId) => {
+    try {
+      const res = await api.post(
+        `/reservations/cancel-reservation`,
+        { id: bookingId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res?.data?.success) {
+        // Remove the canceled booking from the state
+        setBookingData((prevState) =>
+          prevState.filter((booking) => booking.id !== bookingId)
+        );
+        toast.success("Booking canceled successfully!");
+      } else {
+        toast.error("Failed to cancel booking!");
+      }
+    } catch (error) {
+      console.error("Error canceling booking:", error);
+      toast.error("Failed to cancel booking!");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center w-screen h-screen">
@@ -133,8 +159,11 @@ const Booking = () => {
                       <th scope="col" className="px-6 py-4 uppercase">
                         Base Price
                       </th>
+                      <th scope="col" className="px-6 py-4 uppercase">
+                        Total Base Price
+                      </th>
                       <th scope="col" className="px-8 py-4 uppercase">
-                        Tax
+                        Total Tax
                       </th>
                       <th scope="col" className="px-8 py-4 uppercase">
                         Total Price
@@ -149,7 +178,11 @@ const Booking = () => {
                       return (
                         <tr
                           key={i}
-                          className={`border hover:bg-[#F9FAFF] hover:cursor-pointer rounded-md`}
+                          className={`border hover:bg-[#F9FAFF] hover:cursor-pointer rounded-md ${
+                            booking?.status === "canceled"
+                              ? "bg-red-100 hover:bg-red-100"
+                              : ""
+                          }`}
                           onClick={() => {
                             navigate(`/rooms/${booking?.id}`);
                           }}
@@ -185,7 +218,6 @@ const Booking = () => {
                             {booking?.location?.state?.name},{" "}
                             {booking?.location?.country?.name},{" "}
                           </td>
-                          {/* Author Name */}
                           <td className="px-6 py-4 w-[100px]">
                             {booking?.hostedBy}
                           </td>
@@ -229,17 +261,22 @@ const Booking = () => {
                           <td className="px-2 py-4 w-[200px]">
                             {booking?.basePrice}
                           </td>
+
+                          {/* Total base Price */}
+                          <td className="px-2 py-4 w-[200px]">
+                            {booking?.totalBase}
+                          </td>
                           {/* Tax*/}
-                          <td className="px-6 py-4 max-w-[10px]">
-                            {booking?.taxes}
+                          <td className="px-6 py-4 w-[100px]">
+                            {booking?.totalTax}
                           </td>
                           {/* Total Price*/}
-                          <td className="px-6 py-4 max-w-[10px]">
-                            {booking?.totalPrice}
+                          <td className="px-6 py-4 w-[100px]">
+                            {booking?.totalPaid}
                           </td>
                           {/* Action */}
-                          <td className="px-1 py-1 max-w-[10px]">
-                            <div>
+                          <td className="px-1 py-1 w-[100px]">
+                            <div className="flex items-center space-x-2">
                               <PDFDownloadLink
                                 document={
                                   <Document>
@@ -299,9 +336,10 @@ const Booking = () => {
                                         <Text>
                                           Base Price: {booking.basePrice}
                                         </Text>
-                                        <Text>Tax: {booking.taxes}</Text>
+                                        <Text>Total Base: {booking.totalBase}</Text>
+                                        <Text>Total Tax: {booking.totalTax}</Text>
                                         <Text>
-                                          Total Price: {booking.totalPrice}
+                                          Total Price: {booking.totalPaid}
                                         </Text>
                                       </View>
                                     </Page>
@@ -310,7 +348,7 @@ const Booking = () => {
                                 fileName="ApnaPG booking receipt.pdf"
                                 style={{
                                   textDecoration: "none",
-                                  padding: "10px",
+                                  padding: "7px",
                                   color: "#4a4a4a",
                                   backgroundColor: "#f2f2f2",
                                   border: "1px solid #4a4a4a",
@@ -318,11 +356,30 @@ const Booking = () => {
                                   cursor: "pointer",
                                   display: "inline-block",
                                 }}
+                                onClick={(e) => e.stopPropagation()}
                               >
                                 {({ blob, url, loading, error }) =>
                                   loading ? "Loading..." : "Download"
                                 }
                               </PDFDownloadLink>
+                              {booking.status !== "canceled" ? (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleCancelBooking(booking._id);
+                                  }}
+                                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                                >
+                                  Cancel
+                                </button>
+                              ) : (
+                                <button
+                                  disabled
+                                  className="bg-gray-300 text-gray-600 font-bold py-2 px-4 rounded cursor-not-allowed"
+                                >
+                                  Cancelled
+                                </button>
+                              )}
                             </div>
                           </td>
                         </tr>
