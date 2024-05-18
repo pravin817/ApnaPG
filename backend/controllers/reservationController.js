@@ -63,12 +63,19 @@ const newReservation = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({
+      return res.status(200).json({
         message: "User not found",
         success: false,
       });
     }
 
+    // If the author and the user are the same
+    if (userId === authorId) {
+      return res.status(200).json({
+        message: "You can't book your own listing",
+        success: false,
+      });
+    }
     // Find the listing details
     const listingDetails = await Room.findById(listingId);
     if (!listingDetails) {
@@ -118,6 +125,8 @@ const newReservation = async (req, res) => {
 
     const savedReservation = await newReservation.save();
 
+    const returnReservation = await Reservation.find({});
+
     console.log("Reservation successfully saved:", savedReservation);
     // Send booking invoice
     await sendRoomBookingInvoice(
@@ -144,6 +153,60 @@ const newReservation = async (req, res) => {
     console.error("Error in booking the room:", error);
     res.status(500).json({
       message: "Error in booking the room",
+      error: error.message,
+      success: false,
+    });
+  }
+};
+
+// cancel reservation
+const cancelReservation = async (req, res) => {
+  try {
+    const userId = req.user;
+    const payload = req.body;
+    const reservationId = payload.id;
+
+    console.log("The reservation id is: ", reservationId);
+
+    const reservation = await Reservation.findById(reservationId);
+    console.log("The reservation is: ", reservation);
+
+    if (!reservation) {
+      return res.status(404).json({
+        message: "Reservation not found",
+        success: false,
+      });
+    }
+
+    if (reservation.bookBy !== userId) {
+      return res.status(401).json({
+        message: "You are not authorized to cancel this reservation",
+        success: false,
+      });
+    }
+
+    const reservationTime = reservation.reservationTime;
+    const currentTime = new Date();
+    const timeDiff = Math.abs(currentTime - reservationTime);
+
+    if (timeDiff > 21600000) {
+      return res.status(400).json({
+        message: "You can't cancel booking after 6 hours of reservation",
+        success: false,
+      });
+    }
+
+    reservation.status = "canceled";
+    await reservation.save();
+
+    res.status(200).json({
+      message: "Reservation successfully canceled",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error in canceling the reservation:", error);
+    res.status(500).json({
+      message: "Error in canceling the reservation",
       error: error.message,
       success: false,
     });
@@ -254,6 +317,7 @@ const getUsersBooking = async (req, res) => {
       const authorDetails = await User.findById(roomAuthor);
 
       bookingData.push({
+        _id: bookings[i]._id.toString(),
         id: listingDetails._id.toString(),
         title: listingDetails.title,
         photos: listingDetails.photos[0],
@@ -270,6 +334,10 @@ const getUsersBooking = async (req, res) => {
         basePrice: bookings[i].basePrice,
         taxes: bookings[i].taxes,
         totalPrice: bookings[i].basePrice + bookings[i].taxes,
+        totalBase: bookings[i].totalBase,
+        totalTax: bookings[i].totalTax,
+        totalPaid: bookings[i].totalPaid,
+        status: bookings[i].status,
       });
     }
 
@@ -291,6 +359,7 @@ module.exports = {
   getStripePublishableKey,
   createPaymentIntent,
   newReservation,
+  cancelReservation,
   getAuthorReservations,
   getAllReservations,
   getUsersBooking,

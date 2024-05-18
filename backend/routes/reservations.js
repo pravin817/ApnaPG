@@ -7,6 +7,7 @@ const {
   getStripePublishableKey,
   createPaymentIntent,
   getUsersBooking,
+  cancelReservation,
 } = require("../controllers/reservationController");
 
 const router = express.Router();
@@ -16,6 +17,9 @@ router.get("/config-stripe", getStripePublishableKey);
 
 // Booking of the room
 router.post("/book-room", verifyJwtToken, newReservation);
+
+// Cancel the reservation
+router.post("/cancel-reservation", verifyJwtToken, cancelReservation);
 
 // Get author reservations
 router.post("/get-author-reservations", verifyJwtToken, getAuthorReservations);

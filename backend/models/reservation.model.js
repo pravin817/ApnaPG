@@ -44,6 +44,14 @@ const reservationSchema = new mongoose.Schema(
     orderId: {
       type: Number,
     },
+    status: {
+      type: String,
+      default: "pending",
+    },
+    reservationTime: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     timestamps: { createAt: "created_at", updatedAt: "updated_at" },
