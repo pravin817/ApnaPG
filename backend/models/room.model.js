@@ -10,6 +10,10 @@ const RoomSchema = new mongoose.Schema(
       type: String,
       default: "In Progress",
     },
+    showStatus: {
+      type: String,
+      default: "show",
+    },
     roomType: {
       type: String,
       // required: [true, "Room type is required"],

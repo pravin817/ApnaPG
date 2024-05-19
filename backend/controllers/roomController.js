@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Room = require("../models/room.model");
 const User = require("../models/user.model");
+const Reservation = require("../models/reservation.model");
 
 // Get the list of all Listings
 const getAllListing = async (req, res) => {
@@ -10,7 +11,11 @@ const getAllListing = async (req, res) => {
 
     // Send only the required data
     const allListingData = data.filter((listing) => {
-      return listing.status === "Complete" && listing.photos.length !== 0;
+      return (
+        listing.status === "Complete" &&
+        listing.showStatus === "show" &&
+        listing.photos.length !== 0
+      );
     });
 
     // check if the listing is empty
@@ -773,6 +778,106 @@ const removeFromWishlist = async (req, res) => {
   }
 };
 
+// Search the room || POST
+const searchRooms = async (req, res) => {
+  const { city, state, country, checkIn, checkOut } = req.body;
+
+  console.log(req.body);
+
+  try {
+    // Build the search criteria
+    const searchCriteria = {};
+    if (city) searchCriteria["location.city.name"] = new RegExp(city, "i");
+    if (state) searchCriteria["location.state.name"] = new RegExp(state, "i");
+    if (country)
+      searchCriteria["location.country.name"] = new RegExp(country, "i");
+
+    // Find rooms based on location criteria
+    const rooms = await Room.find(searchCriteria);
+
+    // console.log("The rooms from the search rooms : ", rooms);
+
+    console.log("The rooms data printed", rooms.length);
+
+    // Convert checkIn and checkOut to Date objects
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+
+    // Filter rooms based on availability
+    const availableRooms = [];
+    for (const room of rooms) {
+      const reservations = await Reservation.find({
+        roomId: room._id,
+        status: { $ne: "canceled" },
+        $or: [
+          { checkIn: { $lt: checkOutDate }, checkOut: { $gt: checkInDate } },
+        ],
+      });
+
+      if (reservations.length === 0) {
+        availableRooms.push(room);
+      }
+    }
+
+    res.status(200).json({
+      message: "Room listing fetched based on search query",
+      success: true,
+      rooms: availableRooms,
+    });
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// Toogle the room visibility || POST
+const toogleRoomVisibility = async (req, res) => {
+  console.log("Toggle room visibility hit");
+  try {
+    const payload = req.body;
+    const roomId = payload.id;
+
+    // console.log("The room id", req.body);
+
+    const findCriteria = {
+      _id: new mongoose.Types.ObjectId(roomId),
+    };
+
+    // Find the room
+    const roomDetails = await Room.findById(findCriteria);
+
+    // console.log("The room details", roomDetails);
+
+    // Check if the room is visible or not
+    if (roomDetails.showStatus === "show") {
+      // Room is visible, so hide it
+      roomDetails.showStatus = "hide";
+    } else {
+      // Room is hidden, so show it
+      roomDetails.showStatus = "show";
+    }
+
+    // Save the updated room details
+    await roomDetails.save();
+
+    res.status(200).json({
+      message: "Room visibility change successfully",
+      success: true,
+      roomDetails,
+    });
+  } catch (error) {
+    console.error("Error toggling room visibility:", error);
+    res.status(500).json({
+      message: "Error while toggling the room visibility",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllListing,
   getOneListing,
@@ -793,4 +898,6 @@ module.exports = {
   publishRoom,
   addToWishlist,
   removeFromWishlist,
+  searchRooms,
+  toogleRoomVisibility,
 };

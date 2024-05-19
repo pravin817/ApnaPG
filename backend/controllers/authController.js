@@ -429,7 +429,7 @@ const generateOtpCodeForMobile = async (req, res) => {
       : `OTP code send successfully on ${mobileNo} mobile number`;
 
     let mobileNumber = "+91" + mobileNo;
-    await sendSMS(mobileNumber, `Your OTP code is ${otpCode}`);
+    await sendSMS(mobileNumber, `Your ApnaPG OTP code is ${otpCode}`);
     res.status(200).json({
       message: msg,
       success: true,

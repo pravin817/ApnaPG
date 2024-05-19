@@ -19,6 +19,8 @@ const {
   savePrices,
   addToWishlist,
   removeFromWishlist,
+  searchRooms,
+  toogleRoomVisibility,
 } = require("../controllers/roomController");
 
 const verifyJwtToken = require("../middlewares/authMiddleware");
@@ -84,5 +86,11 @@ router.post("/add-to-wishlist", verifyJwtToken, addToWishlist);
 
 // Remove the room from the wishlist
 router.post("/remove-from-wishlist", verifyJwtToken, removeFromWishlist);
+
+// Search the room || POST
+router.post("/search-room", searchRooms);
+
+// Toogle the room visibility || POST
+router.post("/toggle-visibility", verifyJwtToken, toogleRoomVisibility);
 
 module.exports = router;
