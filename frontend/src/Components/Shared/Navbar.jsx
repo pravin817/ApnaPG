@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FaMinusCircle, FaPlusCircle, FaSearch } from "react-icons/fa";
+import { FaHome, FaMinusCircle, FaPlusCircle, FaSearch } from "react-icons/fa";
 import { FaHouseDamage } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -72,12 +72,6 @@ const Navbar = () => {
   const [showExtendedSearch, setShowExtendedSearch] = useState(true);
   const [hideSmallSearch, setHideSmallSearch] = useState(true);
 
-  // Search
-  // const [city, setCity] = useState("Karad");
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
-  // const [guestCount, setGuestCount] = useState(0);
-
   const [city, setCity] = useState("");
   const [guestCount, setGuestCount] = useState(1);
   const [cities, setCities] = useState([]);
@@ -96,21 +90,6 @@ const Navbar = () => {
   const handleCitySelect = (selectedCity) => {
     setCity(selectedCity);
     setShowCityPopup(false);
-    // You can perform additional actions here, such as fetching data based on the selected city.
-  };
-
-  const handleGuestCountChange = (count) => {
-    setGuestCount(count);
-    setShowGuestPopup(false);
-    // You can perform additional actions here, such as updating the UI based on the selected guest count.
-  };
-
-  const handleSearchClick = () => {
-    setSearchPopupOpen(true);
-  };
-
-  const handleCloseSearchPopup = () => {
-    setSearchPopupOpen(false);
   };
 
   const userMenuRef = useRef(null);
@@ -155,6 +134,13 @@ const Navbar = () => {
   }, []);
 
   const handleSearch = () => {
+    console.table([city, guestCount, formattedStartDate, formattedEndDate]);
+    if (city === "") {
+      setCity("Karad");
+    }
+
+    // setCity("Karad");
+    // setGuestCount(1);
     navigate(
       `/search?city=${city}&guests=${guestCount}&checkIn=${formattedStartDate}&checkOut=${formattedEndDate}`
     );
@@ -264,12 +250,12 @@ const Navbar = () => {
                         <p className="text-sm text-[#222222]">{guestCount}</p>
                       </div>
 
-                      <div
+                      <button
                         onClick={handleSearch}
                         className="flex justify-center items-center bg-[#003B95] px-3 py-3 rounded-tr-lg rounded-br-lg mr-2"
                       >
                         <FaSearch className="text-white" />
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -425,8 +411,8 @@ const Navbar = () => {
                       to="/host/rooms"
                       className=" bg-[#ffffff] hover:bg-[#f0f0f0] transition-all rounded-full p-2 cursor-pointer mr-3 md:block hidden"
                     >
-                      <p className="text-sm font-medium text-[#222222]">
-                        Host your room
+                      <p className="text-sm font-medium text-[#222222] flex items-center gap-1">
+                        <FaHome /> Host your room
                       </p>
                     </Link>
                   )}
@@ -539,9 +525,6 @@ const Navbar = () => {
                           <Link
                             onClick={() => {
                               handleLogOut();
-
-                              // Reload the page to avoid the UX issues
-                              // window.reload();
                             }}
                           >
                             Log Out
@@ -556,57 +539,63 @@ const Navbar = () => {
           </>
         )}
       </div>
+
       {/* Check in-out calendar */}
-      <div
-        ref={calendarRef}
-        className="absolute top-[90px] left-1/2 transform -translate-x-1/2 border-neutral-200 shadow-md"
-      >
-        {calendarState && (
-          <div className="mx-auto top-1">
-            <DateRange
-              className="rounded-xl shadow-2xl"
-              ranges={selectedDates}
-              onChange={handleSelect}
-              minDate={new Date()}
-              rangeColors={["#003B95"]}
-              direction="horizontal"
-            />
-          </div>
-        )}
-      </div>
+      {calendarState && (
+        <div
+          ref={calendarRef}
+          className="absolute top-[82px] left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-md rounded-lg"
+        >
+          <DateRange
+            className="rounded-full"
+            editableDateInputs={true}
+            onChange={handleSelect}
+            moveRangeOnFirstSelection={false}
+            ranges={selectedDates}
+            months={2}
+            minDate={new Date()}
+            direction="horizontal"
+          />
+        </div>
+      )}
 
       {/* City Selection Popup */}
       {showCityPopup && (
         <div
           ref={cityPopupRef}
-          className="absolute top-[90px] left-[32%] transform -translate-x-1/2 bg-white p-4 rounded-lg w-[280px]"
+          className="absolute top-[85px] left-[28%] transform -translate-x-1/2 bg-white rounded-lg shadow-md"
         >
-          <div className="">
-            <h3 className="text-lg font-semibold mb-4">Select a City</h3>
-            <input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              placeholder="Search city..."
-              className="w-full border border-gray-300 rounded-md p-2 mb-4"
-            />
-            <ul className="max-h-64 overflow-y-auto">
-              {filteredCities.map((city) => (
-                <li
-                  key={city.name}
-                  className="cursor-pointer py-2 px-4 hover:bg-gray-100"
-                  onClick={() => handleCitySelect(city.name)}
+          <div className="bg-white p-6 rounded-lg w-96 border border-t-0 border-gray-300">
+            <div className="relative">
+              <h3 className="text-lg font-semibold mb-4">Select a City</h3>
+
+              <input
+                type="text"
+                placeholder="Search city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+              {city && (
+                <button
+                  className="absolute top-2 right-2"
+                  onClick={() => setCity("")}
                 >
-                  {city.name}
+                  <IoIosCloseCircle className="text-gray-500" />
+                </button>
+              )}
+            </div>
+            <ul className="mt-4 max-h-60 overflow-y-auto">
+              {filteredCities.map((c) => (
+                <li
+                  key={c.id}
+                  onClick={() => handleCitySelect(c.name)}
+                  className="cursor-pointer hover:bg-gray-200 p-2"
+                >
+                  {c.name}
                 </li>
               ))}
             </ul>
-            <button
-              className="mt-4 px-4 py-2 bg-[#003B95] text-white rounded-lg"
-              onClick={() => setShowCityPopup(false)}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
@@ -615,7 +604,7 @@ const Navbar = () => {
       {showGuestPopup && (
         <div
           ref={guestPopupRef}
-          className="absolute top-[90px] left-[66%] transform -translate-x-1/2 bg-white p-4 rounded-lg w-[280px]"
+          className="absolute top-[85px] left-[66%] transform -translate-x-1/2 bg-white p-4 rounded-lg w-[280px] shadow-md"
         >
           <div className="">
             <div className="flex items-center justify-between h-[30px] ">

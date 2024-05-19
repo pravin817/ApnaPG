@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import HomePageSkeleton from "../Components/skeletonLoading/HomePageSkeleton";
 import Category from "../Components/Home/Category";
 import PriceWithTaxCard from "../Components/Home/PriceWithTaxCard";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [hasScroll, setHasScroll] = useState(false);
@@ -49,6 +50,8 @@ const Home = () => {
       return res.data.allListingData;
     },
   });
+
+  // const allListingData = useSelector((state) => state.room.roomsData);
 
   // saving category to local storage if the url has the category then save that otherwise default  will be house
   useEffect(() => {

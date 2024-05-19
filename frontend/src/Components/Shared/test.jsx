@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { FaMinusCircle, FaPlusCircle, FaSearch } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaMinusCircle,
+  FaPlusCircle,
+  FaSearch,
+} from "react-icons/fa";
 import { FaHouseDamage } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getUser,
-  userLogin,
-  userLogOut,
-} from "../../redux/actions/userActions";
+import { getUser, userLogOut } from "../../redux/actions/userActions";
 
-// Import the icons
 import searchIcon from "../../assets/BasicIcon/Search.svg";
 import hamburgerMenu from "../../assets/BasicIcon/HamburgerMenu.svg";
 import userProfile from "../../assets/BasicIcon/UserProfile.png";
@@ -21,7 +21,7 @@ import DashboardMenu from "./DashboardMenu";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { DateRange } from "react-date-range";
-import { Country, State, City } from "country-state-city";
+import { City } from "country-state-city";
 
 const Navbar = () => {
   // refs
@@ -73,11 +73,6 @@ const Navbar = () => {
   const [hideSmallSearch, setHideSmallSearch] = useState(true);
 
   // Search
-  // const [city, setCity] = useState("Karad");
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
-  // const [guestCount, setGuestCount] = useState(0);
-
   const [city, setCity] = useState("");
   const [guestCount, setGuestCount] = useState(1);
   const [cities, setCities] = useState([]);
@@ -96,13 +91,11 @@ const Navbar = () => {
   const handleCitySelect = (selectedCity) => {
     setCity(selectedCity);
     setShowCityPopup(false);
-    // You can perform additional actions here, such as fetching data based on the selected city.
   };
 
   const handleGuestCountChange = (count) => {
     setGuestCount(count);
     setShowGuestPopup(false);
-    // You can perform additional actions here, such as updating the UI based on the selected guest count.
   };
 
   const handleSearchClick = () => {
@@ -126,11 +119,9 @@ const Navbar = () => {
 
   // get the user
   const user = useSelector((state) => state.user.userDetails);
-  // console.log("The user form navbar : ", user);
 
   // Get the user id
   const userId = user?._id;
-  // console.log("The user Id is ", userId);
 
   const handleLogOut = () => {
     dispatch(userLogOut());
@@ -155,7 +146,12 @@ const Navbar = () => {
   }, []);
 
   const handleSearch = () => {
-    // Perform search with selected parameters
+    if (city === "") {
+      setCity("Karad");
+    }
+    navigate(
+      `/search?city=${city}&guests=${guestCount}&checkIn=${formattedStartDate}&checkOut=${formattedEndDate}`
+    );
   };
 
   return (
@@ -191,7 +187,6 @@ const Navbar = () => {
               }}
               to={"/"}
             >
-              {/* Apna<span className="text-black">PG</span> */}
               ApnaPG
             </Link>
           </span>
@@ -210,9 +205,7 @@ const Navbar = () => {
               <div className="lg:block hidden">
                 <div className="flex items-center justify-between transition-all cursor-pointer">
                   <div className="flex flex-col w-full transition duration-200">
-                    {/* The main search bar  */}
-
-                    <div className=" flex justify-between items-center border  bg-white w-full rounded-lg">
+                    <div className=" flex justify-between items-center border bg-white w-full rounded-lg m-0">
                       {/* Location */}
                       <div
                         className="px-3 py-3 ml-1"
@@ -264,430 +257,288 @@ const Navbar = () => {
                         <p className="text-sm text-[#222222]">{guestCount}</p>
                       </div>
 
-                      <div
+                      <button
                         onClick={handleSearch}
-                        className="flex justify-center items-center bg-[#003B95] px-3 py-3 rounded-tr-lg rounded-br-lg mr-2"
+                        className="bg-[#003B95] h-full flex items-center justify-center rounded-lg m-1 aspect-square"
                       >
                         <FaSearch className="text-white" />
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             )}
+
+            {/* Hamburger menu */}
+            <div className="flex items-center justify-end relative">
+              <span
+                className="hover:scale-105 transition-all duration-100 cursor-pointer"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <img
+                  src={hamburgerMenu}
+                  alt="search"
+                  className="aspect-square w-8 md:w-10"
+                />
+              </span>
+              <div
+                ref={dropdownRef}
+                className={`absolute ${
+                  showDropdown ? "top-20" : "top-[-400px]"
+                } right-0 px-5 py-5 bg-white w-[300px] h-auto flex flex-col justify-start items-start transition-all duration-300 shadow-xl z-50 rounded-lg`}
+              >
+                <Link
+                  className="hover:bg-blue-500 hover:text-white py-2 px-2 transition-all duration-200 rounded-md font-semibold"
+                  to={"/aboutus"}
+                >
+                  About Us
+                </Link>
+                <Link
+                  className="hover:bg-blue-500 hover:text-white py-2 px-2 transition-all duration-200 rounded-md font-semibold"
+                  to={"/host/rooms"}
+                >
+                  Host Your Home
+                </Link>
+                <Link
+                  className="hover:bg-blue-500 hover:text-white py-2 px-2 transition-all duration-200 rounded-md font-semibold"
+                  to={"/contact"}
+                >
+                  Contact Us
+                </Link>
+              </div>
+            </div>
           </>
         )}
 
-        {/* if in the booking page don't show any option 👇  */}
+        {/* user profile menu */}
         {inBookingPage ? (
-          <div className="flex justify-end ">
-            <div
-              className="border-[1px] bg-white border-[#dddddd] rounded-full py-1 px-2 flex flex-row gap-3 hover:shadow-md transition-all cursor-pointer relative"
-              onClick={() => {
-                setShowUserMenu((preValue) => !preValue);
-              }}
-            >
-              <img src={hamburgerMenu} alt="User Menu" className="w-4" />
-
-              {/* show the user name based on the condition */}
-              {user ? (
-                <p className=" bg-[#222222] text-[#efefef] px-3 py-2 rounded-full text-xs">
-                  {user.name?.firstName?.slice(0, 1)}
-                </p>
-              ) : (
-                <img src={userProfile} alt="User Profile" className="w-8" />
-              )}
-            </div>
-
-            {/* show the below user menu if the user is not login */}
-            {showUserMenu ? (
-              <div>
-                {!user ? (
-                  <div
-                    ref={userMenuRef}
-                    className="shadow-md absolute right-9 top-[74px] bg-[#ffffff] border-[1px] border-[#dddddd] rounded-lg flex flex-col py-2 w-[230px] transition-all user-menu"
-                  >
-                    <Link
-                      className="font-medium"
-                      onClick={() => {
-                        setShowUserMenu(false);
-                        setPopup(true);
-                      }}
-                    >
-                      Sign up
-                    </Link>
-                    <Link
-                      onClick={() => {
-                        setShowUserMenu(false);
-                        setPopup(true);
-                      }}
-                    >
-                      Login
-                    </Link>
-                    <hr className="h-[1.5px] bg-[#ddddd] my-1" />
-                    <Link to={"/host/rooms"}>Rent your Room</Link>
-                    <Link to={"/help"}>Help</Link>
-                  </div>
-                ) : (
-                  // Logged In User Menu
-                  <div
-                    ref={userMenuRef}
-                    className="shadow-md absolute right-9 top-[70px] bg-[#ffffff] border-[1px] border-[#dddddd] rounded-lg flex flex-col py-2 w-[230px] transition-all user-menu z-10000"
-                    onClick={() => {
-                      setShowUserMenu((prev) => !prev);
-                    }}
-                  >
-                    {user?.role === "host" || user?.role === "admin" ? (
-                      <>
-                        {!inUserDashboard ? (
-                          <Link
-                            to={`/users/dashboard/${user._id}/overview=true`}
-                            onClick={() => {
-                              JSON.stringify(
-                                sessionStorage.setItem("activePage", 1)
-                              );
-                            }}
-                            className="font-medium"
-                          >
-                            Dashboard
-                          </Link>
-                        ) : (
-                          <Link className="font-medium" to={"/"}>
-                            Home
-                          </Link>
-                        )}
-                      </>
-                    ) : (
-                      <Link className="font-medium">Notifications</Link>
-                    )}
-
-                    <Link
-                      to={`/users/show/booking/${userId}`}
-                      className="font-medium"
-                    >
-                      Bookings
-                    </Link>
-                    <Link
-                      to={`/users/show/wishlist/${userId}`}
-                      className="font-medium"
-                    >
-                      WishLists
-                    </Link>
-
-                    <hr className="h-[1.5px] bg-[#dddddd] my-1" />
-                    <Link to={"/host/rooms"}>Rent Your Room</Link>
-                    <Link to={`/users/show/${userId}/verify-account`}>
-                      Verify Account
-                    </Link>
-                    <Link to={`/users/show/${user._id}`}>Account</Link>
-                    <hr className="h-[1.5px] bg-[#dddddd] my-1" />
-                    <Link to={"/help"}>Help</Link>
-                    <Link
-                      onClick={() => {
-                        handleLogOut();
-
-                        // Reload the page to avoid the UX issues
-                        // window.reload();
-                      }}
-                    >
-                      Log Out
-                    </Link>
-                  </div>
-                )}
-              </div>
-            ) : null}
+          <div className="w-1/4 flex items-center justify-end">
+            <img
+              src={userProfile}
+              alt="User Profile"
+              className="aspect-square w-10 h-10 rounded-full"
+            />
           </div>
         ) : (
           <>
-            {/* If the user in the host Room landing page then show the different options  */}
-            {inHostRoomsLandingPage ? (
-              <div className=" flex flex-row items-center justify-between gap-4">
-                <p className=" text-white text-sm font-medium hidden sm:block">
-                  Ready to Host it?
+            <div className="flex items-center justify-end relative">
+              <div
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="cursor-pointer flex flex-row items-center gap-3"
+              >
+                <img
+                  src={userProfile}
+                  alt="User Profile"
+                  className="aspect-square w-10 h-10 rounded-full"
+                />
+                <p className="text-white text-lg font-semibold hidden xl:block">
+                  {user?.firstName}
                 </p>
-                <Link
-                  to="/become-a-host"
-                  className=" flex flex-row justify-between items-center gap-2 bg-white hover:bg-white transition-all duration-300 px-3 py-2 rounded-lg"
-                >
-                  {/* <img src={house} alt="House setup" className=" w-4 md:w-5" /> */}
-                  <FaHouseDamage />
-                  <p className=" font-semibold text-sm md:text-bas">
-                    ApnaPG setup
-                  </p>
-                </Link>
               </div>
-            ) : (
-              <>
-                {/* user profile */}
-                <div className="flex justify-end items-center">
-                  {!inUserDashboard && (
-                    <Link
-                      to="/host/rooms"
-                      className=" bg-[#ffffff] hover:bg-[#f0f0f0] transition-all rounded-full p-2 cursor-pointer mr-3 md:block hidden"
-                    >
-                      <p className="text-sm font-medium text-[#222222]">
-                        Host your room
-                      </p>
-                    </Link>
-                  )}
 
-                  <div
-                    className="border-[1px] bg-white border-[#dddddd] rounded-full py-1 px-2 flex flex-row gap-3 hover:shadow-md transition-all cursor-pointer relative"
-                    onClick={() => {
-                      setShowUserMenu((preValue) => !preValue);
-                    }}
+              {showUserMenu && (
+                <div
+                  ref={userMenuRef}
+                  className="absolute top-14 right-0 px-5 py-5 bg-white w-[200px] h-auto flex flex-col justify-start items-start transition-all duration-300 shadow-xl z-50 rounded-lg"
+                >
+                  <Link
+                    className="hover:bg-blue-500 hover:text-white py-2 px-2 transition-all duration-200 rounded-md font-semibold w-full"
+                    to={`/users/show/${userId}`}
                   >
-                    <img src={hamburgerMenu} alt="User Menu" className="w-4" />
-
-                    {/* show the user name based on the condition */}
-                    {user ? (
-                      <p className=" bg-[#222222] text-[#efefef] px-3 py-2 rounded-full text-xs">
-                        {user.name?.firstName?.slice(0, 1)}
-                      </p>
-                    ) : (
-                      <img
-                        src={userProfile}
-                        alt="User Profile"
-                        className="w-8"
-                      />
-                    )}
-                  </div>
-
-                  {/* show the below user menu if the user is not login */}
-                  {showUserMenu ? (
-                    <div>
-                      {!user ? (
-                        <div
-                          ref={userMenuRef}
-                          className="shadow-md absolute right-9 top-[74px] bg-[#ffffff] border-[1px] border-[#dddddd] rounded-lg flex flex-col py-2 w-[230px] transition-all user-menu"
-                        >
-                          <Link
-                            className="font-medium"
-                            onClick={() => {
-                              setShowUserMenu(false);
-                              setPopup(true);
-                            }}
-                          >
-                            Sign up
-                          </Link>
-                          <Link
-                            onClick={() => {
-                              setShowUserMenu(false);
-                              setPopup(true);
-                            }}
-                          >
-                            Login
-                          </Link>
-                          <hr className="h-[1.5px] bg-[#ddddd] my-1" />
-                          <Link to={"/host/rooms"}>Rent your Room</Link>
-                          <Link to={"/help"}>Help</Link>
-                        </div>
-                      ) : (
-                        // Logged In User Menu
-                        <div
-                          ref={userMenuRef}
-                          className="shadow-md absolute right-9 top-[70px] bg-[#ffffff] border-[1px] border-[#dddddd] rounded-lg flex flex-col py-2 w-[230px] transition-all user-menu z-10000"
-                          onClick={() => {
-                            setShowUserMenu((prev) => !prev);
-                          }}
-                        >
-                          {user?.role === "host" || user?.role === "admin" ? (
-                            <>
-                              {!inUserDashboard ? (
-                                <Link
-                                  to={`/users/dashboard/${user._id}/overview=true`}
-                                  onClick={() => {
-                                    JSON.stringify(
-                                      sessionStorage.setItem("activePage", 1)
-                                    );
-                                  }}
-                                  className="font-medium"
-                                >
-                                  Dashboard
-                                </Link>
-                              ) : (
-                                <Link className="font-medium" to={"/"}>
-                                  Home
-                                </Link>
-                              )}
-                            </>
-                          ) : (
-                            <Link className="font-medium">Notifications</Link>
-                          )}
-
-                          <Link
-                            to={`/users/show/booking/${userId}`}
-                            className="font-medium"
-                          >
-                            Bookings
-                          </Link>
-                          <Link
-                            to={`/users/show/wishlist/${userId}`}
-                            className="font-medium"
-                          >
-                            WishLists
-                          </Link>
-
-                          <hr className="h-[1.5px] bg-[#dddddd] my-1" />
-                          <Link to={"/host/rooms"}>Rent Your Room</Link>
-                          <Link to={`/users/show/${userId}/verify-account`}>
-                            Verify Account
-                          </Link>
-                          <Link to={`/users/show/${user._id}`}>Account</Link>
-                          <hr className="h-[1.5px] bg-[#dddddd] my-1" />
-                          <Link to={"/help"}>Help</Link>
-                          <Link
-                            onClick={() => {
-                              handleLogOut();
-
-                              // Reload the page to avoid the UX issues
-                              // window.reload();
-                            }}
-                          >
-                            Log Out
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  ) : null}
+                    Profile
+                  </Link>
+                  <Link
+                    className="hover:bg-blue-500 hover:text-white py-2 px-2 transition-all duration-200 rounded-md font-semibold w-full"
+                    to={`/users/dashboard/${userId}`}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogOut}
+                    className="hover:bg-blue-500 hover:text-white py-2 px-2 transition-all duration-200 rounded-md font-semibold w-full text-left"
+                  >
+                    Log Out
+                  </button>
                 </div>
-              </>
-            )}
+              )}
+            </div>
           </>
         )}
       </div>
-      {/* Check in-out calendar */}
-      <div ref={calendarRef}>
-        {calendarState && (
-          <div className="relative flex justify-center mx-auto top-1">
-            <DateRange
-              className="rounded-xl shadow-2xl"
-              ranges={selectedDates}
-              onChange={handleSelect}
-              minDate={new Date()}
-              rangeColors={["#003B95"]}
-              direction="horizontal"
-            />
-          </div>
-        )}
-      </div>
 
-      {/* City Selection Popup */}
+      {/* Popup for city selection */}
       {showCityPopup && (
         <div
           ref={cityPopupRef}
-          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         >
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-4 rounded-lg max-w-lg w-full">
-              <h3 className="text-lg font-semibold mb-4">Select a City</h3>
+          <div className="bg-white p-8 rounded-lg w-96">
+            <div className="relative">
               <input
                 type="text"
+                placeholder="Search city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                placeholder="Search city..."
-                className="w-full border border-gray-300 rounded-md p-2 mb-4"
+                className="w-full p-2 border rounded"
               />
-              <ul className="max-h-64 overflow-y-auto">
-                {filteredCities.map((city) => (
-                  <li
-                    key={city.name}
-                    className="cursor-pointer py-2 px-4 hover:bg-gray-100"
-                    onClick={() => handleCitySelect(city.name)}
-                  >
-                    {city.name}
-                  </li>
-                ))}
-              </ul>
-              <button
-                className="mt-4 px-4 py-2 bg-[#003B95] text-white rounded-lg"
-                onClick={() => setShowCityPopup(false)}
-              >
-                Close
-              </button>
+              {city && (
+                <button
+                  className="absolute top-2 right-2"
+                  onClick={() => setCity("")}
+                >
+                  <IoIosCloseCircle className="text-gray-500" />
+                </button>
+              )}
             </div>
+            <ul className="mt-4 max-h-60 overflow-y-auto">
+              {filteredCities.map((c) => (
+                <li
+                  key={c.id}
+                  onClick={() => handleCitySelect(c.name)}
+                  className="cursor-pointer hover:bg-gray-200 p-2"
+                >
+                  {c.name}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
 
-      {/* Guest Count Popup */}
+      {/* Guest count selection */}
       {showGuestPopup && (
         <div
           ref={guestPopupRef}
-          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         >
-          <div className="bg-white p-4 rounded-lg max-w-lg w-full">
-            <h3 className="text-lg font-semibold mb-4">Select Guest Count</h3>
-            <div className="flex items-center justify-center space-x-4">
+          <div className="bg-white p-8 rounded-lg w-96">
+            <div className="flex items-center justify-between">
               <button
-                className="px-3 py-2 bg-gray-200 rounded-lg"
-                onClick={() => setGuestCount((prev) => Math.max(prev - 1, 1))}
+                onClick={() =>
+                  handleGuestCountChange(Math.max(1, guestCount - 1))
+                }
+                className="p-2 border rounded"
               >
                 <FaMinusCircle />
               </button>
-              <span className="text-lg">{guestCount}</span>
+              <span>{guestCount}</span>
               <button
-                className="px-3 py-2 bg-gray-200 rounded-lg"
-                onClick={() => setGuestCount((prev) => prev + 1)}
+                onClick={() => handleGuestCountChange(guestCount + 1)}
+                className="p-2 border rounded"
               >
                 <FaPlusCircle />
               </button>
             </div>
-            <button
-              className="mt-4 px-4 py-2 bg-[#003B95] text-white rounded-lg"
-              onClick={() => setShowGuestPopup(false)}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
 
-      {/* calendar & date picker */}
-      {!calendarState ? null : (
+      {/* Date picker */}
+      {calendarState && (
         <div
           ref={calendarRef}
-          className=" absolute top-[90px]  transform -translate-x-1/2 border-neutral-200 shadow-md sm:translate-x-[0%] sm:translate-y-[0%] md:translate-x-[-30%] lg:translate-x-[-20%] xl:translate-x-0 xl:translate-y-0"
+          className="absolute top-[80px] left-1/2 transform -translate-x-1/2 z-50"
         >
           <DateRange
-            rangeColors={["#262626"]}
-            date={new Date()}
             editableDateInputs={true}
             onChange={handleSelect}
             moveRangeOnFirstSelection={false}
             ranges={selectedDates}
-            // disabledDates={disabledDates}
-            // isDayBlocked={(date) => isDateDisabled(date)}
-            direction="vertical"
-            showDateDisplay={false}
+            months={2}
             minDate={new Date()}
+            direction="horizontal"
           />
         </div>
       )}
 
-      {/* Mobile Search */}
-      {/* {isSmallDevice && (
-        <div className="flex justify-center items-center py-2 px-5">
-          <div
-            className="flex items-center justify-between w-full bg-white rounded-lg py-2 px-3"
-            onClick={handleSearchClick}
+      {/* Small Device Search */}
+      <div
+        className={`transition-all duration-500 fixed z-[100] bg-[#003B95] top-0 w-full h-screen ${
+          hideSmallSearch ? "left-full" : "left-0"
+        }`}
+      >
+        <div className="flex items-center justify-between py-3 px-3 border-b-2 border-blue-600">
+          <h2 className="text-white text-lg font-semibold">Search Stays</h2>
+          <button
+            className="text-white text-2xl"
+            onClick={() => setHideSmallSearch(true)}
           >
+            &times;
+          </button>
+        </div>
+        <div className="flex flex-col px-3 py-3 gap-4">
+          <div className="relative">
             <input
               type="text"
-              placeholder="Search"
-              className="w-full border-none focus:outline-none"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="w-full p-2 border rounded"
             />
-            <FaSearch className="text-gray-500" />
+            {city && (
+              <button
+                className="absolute top-2 right-2"
+                onClick={() => setCity("")}
+              >
+                <IoIosCloseCircle className="text-gray-500" />
+              </button>
+            )}
           </div>
+          <div>
+            <div className="flex items-center justify-between border p-2 rounded">
+              <div>
+                <p className="text-[10px] text-black font-semibold uppercase">
+                  Check-in
+                </p>
+                <p className="text-sm text-[#222222]">{localStartDate}</p>
+              </div>
+              <div>
+                <MdKeyboardArrowDown
+                  className="cursor-pointer text-gray-500"
+                  onClick={() => setCalendarState(!calendarState)}
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between border p-2 rounded mt-2">
+              <div>
+                <p className="text-[10px] text-black font-semibold uppercase">
+                  Checkout
+                </p>
+                <p className="text-sm text-[#222222]">{localEndDate}</p>
+              </div>
+              <div>
+                <MdKeyboardArrowDown
+                  className="cursor-pointer text-gray-500"
+                  onClick={() => setCalendarState(!calendarState)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-between border p-2 rounded">
+            <div>
+              <p className="text-[10px] text-black font-semibold uppercase">
+                Guests
+              </p>
+              <p className="text-sm text-[#222222]">{guestCount}</p>
+            </div>
+            <div>
+              <FaChevronDown
+                className="cursor-pointer text-gray-500"
+                onClick={() => setShowGuestPopup(true)}
+              />
+            </div>
+          </div>
+          <button
+            onClick={handleSearch}
+            className="bg-[#003B95] text-white p-2 rounded mt-2"
+          >
+            Search
+          </button>
         </div>
-      )} */}
-      <AuthenticationPopUp popup={popup} setPopup={setPopup} />
+      </div>
+      {/* </div> */}
     </nav>
   );
 };
 
 export default Navbar;
-
-

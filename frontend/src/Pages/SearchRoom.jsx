@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "../backend";
-import { Link } from "react-router-dom";
+import api, { API } from "../backend";
+import { Link, useSearchParams } from "react-router-dom";
 import ReactSlider from "react-slider";
 import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is imported
 import { IoIosArrowDown, IoIosArrowUp, IoIosStar } from "react-icons/io";
 import SkeletonRoomCard from "../Components/skeletonLoading/SkeletonRoomCard";
+import toast from "react-hot-toast";
 
 const amenitiesList = [
   "Wifi",
@@ -32,11 +33,22 @@ const standOutList = [
 ];
 
 const SearchRoom = () => {
+  // Get the data from the search params
+  const [searchParams] = useSearchParams();
+  console.log("The search params are: ", searchParams);
+
+  const searchParamsObj = Object.fromEntries([...searchParams]);
+  console.log("The search params object is: ", searchParamsObj);
+
+  const city = searchParamsObj?.city;
+  const checkIn = searchParamsObj?.checkIn;
+  const checkOut = searchParamsObj?.checkOut;
+
   const [rooms, setRooms] = useState([]);
   const [filters, setFilters] = useState({
     roomType: "",
     privacyType: "",
-    guests: 1,
+    guests: parseInt(searchParamsObj?.guests) || 1,
     minPrice: 0,
     maxPrice: 10000,
     amenities: [],
@@ -46,24 +58,51 @@ const SearchRoom = () => {
   const [showAmenities, setShowAmenities] = useState(true);
   const [showStandOut, setShowStandOut] = useState(true);
   const [showPrice, setShowPrice] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    data: allListingData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["allListing"],
-    queryFn: async () => {
-      const res = await axios.get(`${API}room/get-all-listing`);
-      return res.data.allListingData;
-    },
-  });
+  // const {
+  //   data: allListingData,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["allListing"],
+  //   queryFn: async () => {
+  //     const res = await axios.get(`${API}room/get-all-listing`);
+  //     return res.data.allListingData;
+  //   },
+  // });
 
   useEffect(() => {
-    if (allListingData) {
-      setRooms(allListingData);
-    }
-  }, [allListingData]);
+    const fetchSearchRooms = async () => {
+      setIsLoading(true);
+      const res = await api.post(
+        "/room/search-room",
+        { city: city, checkIn: checkIn, checkOut: checkOut },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(res);
+      if (res?.data?.success) {
+        setIsLoading(false);
+        setRooms(res?.data?.rooms);
+      } else {
+        setIsLoading(false);
+        toast.error("No room found");
+      }
+    };
+
+    fetchSearchRooms();
+  }, []);
+
+  // useEffect(() => {
+  //   if (allListingData) {
+  //     setRooms(allListingData);
+  //   }
+  // }, [allListingData]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -119,16 +158,19 @@ const SearchRoom = () => {
       filters.roomType === "" || room.roomType === filters.roomType;
     const matchesPrivacyType =
       filters.privacyType === "" || room.privacyType === filters.privacyType;
-    const matchesGuests = room.floorPlan.guests >= filters.guests;
+    const matchesGuests =
+      room.floorPlan && room.floorPlan.guests >= filters.guests;
     const matchesPrice =
       room.basePrice >= filters.minPrice && room.basePrice <= filters.maxPrice;
     const matchesAmenities = filters.amenities.every((amenity) =>
       room.amenities.includes(amenity)
     );
     const matchesBedrooms =
-      filters.bedrooms === 0 || room.floorPlan.bedrooms >= filters.bedrooms;
+      filters.bedrooms === 0 ||
+      (room.floorPlan && room.floorPlan.bedrooms >= filters.bedrooms);
     const matchesBathrooms =
-      filters.bathrooms === 0 || room.floorPlan.bathrooms >= filters.bathrooms;
+      filters.bathrooms === 0 ||
+      (room.floorPlan && room.floorPlan.bathRoomsNumber >= filters.bathrooms);
     return (
       matchesRoomType &&
       matchesPrivacyType &&
@@ -140,8 +182,8 @@ const SearchRoom = () => {
     );
   });
 
-  // if (isLoading) return <SkeletonRoomCard/>;
-  if (error) return <p>Error loading rooms</p>;
+  // // if (isLoading) return <SkeletonRoomCard/>;
+  // if (error) return <p>Error loading rooms</p>;
 
   return (
     <div className="flex">
@@ -422,13 +464,13 @@ const RoomCard = ({ room }) => {
           Privacy Type: {room?.privacyType}
         </p>
         <p className="text-gray-600 text-[15.50px]">
-          Guests: {room?.floorPlan.guests}
+          Guests: {room?.floorPlan?.guests}
         </p>
         <p className="text-gray-600 text-[15.50px]">
-          Bedrooms: {room?.floorPlan.bedrooms}
+          Bedrooms: {room?.floorPlan?.bedrooms}
         </p>
         <p className="text-gray-600 text-[15.50px]">
-          Bathrooms: {room?.floorPlan.bathRoomsNumber}
+          Bathrooms: {room?.floorPlan?.bathRoomsNumber}
         </p>
         <p className="text-gray-600 text-[15.50px]">
           Amenities: {room?.amenities.slice(0, 10).join(", ")}
