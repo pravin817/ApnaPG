@@ -338,3 +338,26 @@ export const publishRoom = (publishRoomData) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const toggleRoomVisibility = (id, showStatus) => async (dispatch) => {
+  try {
+    const res = await api.post(
+      `/room/toggle-visibility`,
+      { id, showStatus },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (res.data?.success) {
+      dispatch({
+        type: "TOGGLE_ROOM_VISIBILITY",
+        payload: { id, showStatus },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

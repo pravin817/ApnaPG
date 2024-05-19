@@ -27,6 +27,15 @@ const roomReducer = (state = initialState, { type, payload }) => {
         ...state,
         listingDetails: payload,
       };
+    case "TOGGLE_ROOM_VISIBILITY":
+      return {
+        ...state,
+        roomsData: state.roomsData.map((room) =>
+          room._id === payload.id
+            ? { ...room, showStatus: payload.showStatus }
+            : room
+        ),
+      };
     default:
       return state;
   }
