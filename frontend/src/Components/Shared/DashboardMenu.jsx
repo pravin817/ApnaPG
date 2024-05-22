@@ -35,7 +35,7 @@ const DashboardMenu = () => {
               onClick={() => {
                 setShowDashboardMenu((preValue) => !preValue);
               }}
-              className=" flex flex-row gap-1 font-medium border-[1px] border-[#dddddd] rounded-full py-2 px-3 cursor-pointer relative user-menu"
+              className=" flex flex-row gap-1 text-white font-medium border-[1px] border-[#dddddd] rounded-full py-2 px-3 cursor-pointer relative user-menu"
             >
               Menu
               <span>
@@ -57,12 +57,12 @@ const DashboardMenu = () => {
                   return (
                     <div
                       key={i}
-                      className=" px-4 py-3 hover:bg-[#f1f1f1] text-white"
+                      className=" px-4 py-3 hover:bg-[#f1f1f1] text-black"
                     >
                       <Link
                         className={`text-sm font-medium ${
                           activePage === item.id
-                            ? "font-medium hover:bg-white transition duration-200 text-white"
+                            ? "font-medium hover:bg-white transition duration-200 text-black"
                             : "opactity-80"
                         }`}
                         to={`${
