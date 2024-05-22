@@ -27,7 +27,7 @@ const WishList = () => {
         );
 
         if (res?.data?.success) {
-          toast.success("Wishlist fetched successfully");
+          // toast.success("Wishlist fetched successfully");
           console.log(res?.data?.rooms);
           setWishList(res?.data?.rooms);
           setLoading(false);
@@ -186,7 +186,10 @@ const WishList = () => {
                           {/* Base price */}
                           <td className="px-1 py-1 max-w-[10px]">
                             <button
-                              onClick={() => removeFromWishList(room._id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeFromWishList(room._id);
+                              }}
                               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
                             >
                               Remove

@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import api, { API } from "../backend";
+import { useState, useEffect } from "react";
+import api from "../backend";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSlider from "react-slider";
-import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is imported
 import { IoIosArrowDown, IoIosArrowUp, IoIosStar } from "react-icons/io";
 import SkeletonRoomCard from "../Components/skeletonLoading/SkeletonRoomCard";
 import toast from "react-hot-toast";
@@ -60,18 +57,6 @@ const SearchRoom = () => {
   const [showPrice, setShowPrice] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // const {
-  //   data: allListingData,
-  //   isLoading,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["allListing"],
-  //   queryFn: async () => {
-  //     const res = await axios.get(`${API}room/get-all-listing`);
-  //     return res.data.allListingData;
-  //   },
-  // });
-
   useEffect(() => {
     const fetchSearchRooms = async () => {
       setIsLoading(true);
@@ -96,13 +81,7 @@ const SearchRoom = () => {
     };
 
     fetchSearchRooms();
-  }, []);
-
-  // useEffect(() => {
-  //   if (allListingData) {
-  //     setRooms(allListingData);
-  //   }
-  // }, [allListingData]);
+  }, [city, checkIn, checkOut]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -182,13 +161,10 @@ const SearchRoom = () => {
     );
   });
 
-  // // if (isLoading) return <SkeletonRoomCard/>;
-  // if (error) return <p>Error loading rooms</p>;
-
   return (
-    <div className="flex">
-      <div className="w-1/4 p-4 sticky top-20 h-screen overflow-auto custom-scrollbar">
-        <h2 className="text-2xl mb-4">Filters</h2>
+    <div className="flex flex-col md:flex-row">
+      <div className="w-full md:w-1/4 p-4 sticky top-20 h-screen overflow-auto custom-scrollbar">
+        <h2 className="text-xl mb-4 font-semibold">Filters</h2>
         <div className="mb-4">
           <label className="block mb-1">Room Type</label>
           <select
@@ -324,22 +300,25 @@ const SearchRoom = () => {
           )}
         </div>
 
-        {/* Amenities section */}
-        <div className="mb-1 p-2">
+        {/* The Amenities Section */}
+        <div className="mb-4">
           <hr className="border-t border-gray-300 my-4" />
-
           <div
-            className="flex items-center justify-start hover:cursor-pointer mt-2"
+            className="flex items-center justify-between w-full cursor-pointer"
             onClick={() => setShowAmenities(!showAmenities)}
           >
-            <p className="font-semibold mr-1">Amenities</p>
-            {showAmenities ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            <h2 className="text-lg font-medium">Amenities</h2>
+            {showAmenities ? (
+              <IoIosArrowUp className="text-lg" />
+            ) : (
+              <IoIosArrowDown className="text-lg" />
+            )}
           </div>
 
           {showAmenities && (
-            <div className="mt-4">
+            <div className="grid grid-cols-2 gap-2 mt-2">
               {amenitiesList.map((amenity) => (
-                <div key={amenity} className="flex items-center mb-2">
+                <label key={amenity} className="flex items-center">
                   <input
                     type="checkbox"
                     value={amenity}
@@ -347,139 +326,148 @@ const SearchRoom = () => {
                     onChange={handleAmenityChange}
                     className="mr-2"
                   />
-                  <span>{amenity}</span>
-                </div>
+                  {amenity}
+                </label>
               ))}
             </div>
           )}
         </div>
 
-        {/* Stand out section  */}
-        <div className="mb-1 p-2">
-          <hr className="border-t border-gray-300 my-1" />
-
+        {/* The StandOut Section */}
+        <div className="mb-4">
+          <hr className="border-t border-gray-300 my-4" />
           <div
-            className="flex items-center justify-start hover:cursor-pointer mt-2"
+            className="flex items-center justify-between w-full cursor-pointer"
             onClick={() => setShowStandOut(!showStandOut)}
           >
-            <p className="font-semibold mr-1">Stand Out</p>
-            {showStandOut ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            <h2 className="text-lg font-medium">Stand Out Amenities</h2>
+            {showStandOut ? (
+              <IoIosArrowUp className="text-lg" />
+            ) : (
+              <IoIosArrowDown className="text-lg" />
+            )}
           </div>
-
           {showStandOut && (
-            <div className="mt-4">
-              {standOutList.map((standout) => (
-                <div key={standout} className="flex items-center mb-2">
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              {standOutList.map((amenity) => (
+                <label key={amenity} className="flex items-center">
                   <input
                     type="checkbox"
-                    value={standout}
-                    checked={filters.amenities.includes(standout)}
+                    value={amenity}
+                    checked={filters.amenities.includes(amenity)}
                     onChange={handleAmenityChange}
                     className="mr-2"
                   />
-                  <span>{standout}</span>
-                </div>
+                  {amenity}
+                </label>
               ))}
             </div>
           )}
         </div>
       </div>
-      <div className="w-3/4 p-4">
-        <h2 className="text-2xl mb-4">Search Results</h2>
-        <div className="grid grid-cols-1 gap-4">
-          {isLoading ? (
-            Array(6)
-              .fill(0)
-              .map((_, index) => <SkeletonRoomCard key={index} />)
-          ) : filteredRooms.length > 0 ? (
-            filteredRooms.map((room) => <RoomCard room={room} key={room._id} />)
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <p className="text-xl text-gray-500">No rooms found</p>
-                <p className="text-gray-400">
-                  Try adjusting your filters or search criteria
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+
+      <div className="w-full md:w-3/4 p-4">
+        {isLoading ? (
+          <>
+            <SkeletonRoomCard />
+            <SkeletonRoomCard />
+            <SkeletonRoomCard />
+            <SkeletonRoomCard />
+          </>
+        ) : filteredRooms.length > 0 ? (
+          filteredRooms.map((room) => (
+            <RoomCard key={room._id} room={room} city={city} />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center min-h-[70vh]">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png"
+              alt="No results"
+              className="w-40 h-40 mb-4"
+            />
+            <h2 className="text-2xl font-semibold">No Results Found</h2>
+            <p className="text-gray-600">Try adjusting your filters.</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 const RoomCard = ({ room }) => {
-  const [currentImage, setCurrentImage] = useState(room?.photos[0]);
+  const [currentImage, setCurrentImage] = useState(room?.photos?.[0]);
 
   return (
-    <Link
-      to={`/rooms/${room?._id}`}
-      className="p-4 border rounded shadow hover:shadow-lg transition flex"
-    >
-      <div className="flex-shrink-0 mr-10">
-        <img
-          src={currentImage}
-          alt={room?.title}
-          className="w-72 h-48 object-cover rounded mb-4"
-        />
-        <div className="flex justify-center gap-2 mb-4">
-          {room?.photos.slice(0, 3).map((photo, index) => (
-            <img
-              key={index}
-              src={photo}
-              alt={`Thumbnail ${index}`}
-              className="w-16 h-16 object-cover rounded cursor-pointer"
-              onClick={(e) => {
-                e.preventDefault();
-                setCurrentImage(photo);
-              }}
-            />
-          ))}
+    <div className="mb-6 bg-white shadow-md rounded-lg overflow-hidden transition-transform transform duration-300 ease-in-out">
+
+      <h2 className="text-xl mb-4 font-semibold">Search Results</h2>
+
+      <Link
+        to={`/rooms/${room?._id}`}
+        className="block md:flex md:items-start p-4 border rounded hover:shadow-lg transition"
+      >
+        <div className="w-80 flex flex-col gap-2 ">
+          <img
+            src={currentImage || "path/to/default/image.jpg"}
+            alt={room?.title || "Room Image"}
+            className="w-full h-48 md:h-64 object-cover rounded mb-4 md:mb-0"
+          />
+          <div className="flex justify-center gap-2 mb-4 md:mb-0">
+            {room?.photos?.slice(0, 3).map((photo, index) => (
+              <img
+                key={index}
+                src={photo}
+                alt={`Thumbnail ${index}`}
+                className="w-16 h-16 object-cover rounded cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentImage(photo);
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="flex-grow">
-        <h3 className="text-xl font-semibold mb-2 flex items-center">
-          <span className="flex items-center mr-2">
-            {room?.rating ? (
-              room?.rating
-            ) : (
-              <div className="flex text-green-900 items-center text-sm bg-green-100 px-2 py-1 rounded-md gap-1">
-                <IoIosStar />
-                New
-              </div>
-            )}
-          </span>
-          {room?.title}
-        </h3>
-        <p className="text-xs sm:text-xs font-medium underline mb-2">
-          {room?.location?.addressLineOne ||
-            room?.location?.addressLineTwo ||
-            room?.location?.country?.name}
-        </p>
-        <p className="text-gray-600 text-[15.50px]">
-          Room Type: {room?.roomType}
-        </p>
-        <p className="text-gray-600 text-[15.50px]">
-          Privacy Type: {room?.privacyType}
-        </p>
-        <p className="text-gray-600 text-[15.50px]">
-          Guests: {room?.floorPlan?.guests}
-        </p>
-        <p className="text-gray-600 text-[15.50px]">
-          Bedrooms: {room?.floorPlan?.bedrooms}
-        </p>
-        <p className="text-gray-600 text-[15.50px]">
-          Bathrooms: {room?.floorPlan?.bathRoomsNumber}
-        </p>
-        <p className="text-gray-600 text-[15.50px]">
-          Amenities: {room?.amenities.slice(0, 10).join(", ")}
-        </p>
-        <p className="text-gray-600 text-[15.50px] mt-2">
-          From ₹ {room?.basePrice}/Day
-        </p>
-      </div>
-    </Link>
+        <div className="w-full md:w-1/2 md:ml-4">
+          <h3 className="text-xl font-semibold mb-2 flex items-center">
+            <span className="flex items-center mr-2">
+              {room?.rating ? (
+                room?.rating
+              ) : (
+                <div className="flex text-green-900 items-center text-sm bg-green-100 px-2 py-1 rounded-md gap-1">
+                  <IoIosStar />
+                  New
+                </div>
+              )}
+            </span>
+            {room?.title}
+          </h3>
+          <p className="text-xs sm:text-sm font-medium underline mb-2">
+            {room?.location?.addressLineOne ||
+              room?.location?.addressLineTwo ||
+              room?.location?.country?.name}
+          </p>
+          <p className="text-gray-600 text-sm">Room Type: {room?.roomType}</p>
+          <p className="text-gray-600 text-sm">
+            Privacy Type: {room?.privacyType}
+          </p>
+          <p className="text-gray-600 text-sm">
+            Guests: {room?.floorPlan?.guests}
+          </p>
+          <p className="text-gray-600 text-sm">
+            Bedrooms: {room?.floorPlan?.bedrooms}
+          </p>
+          <p className="text-gray-600 text-sm">
+            Bathrooms: {room?.floorPlan?.bathRoomsNumber}
+          </p>
+          <p className="text-gray-600 text-sm">
+            Amenities: {room?.amenities?.slice(0, 10).join(", ")}
+          </p>
+          <p className="text-gray-600 text-sm mt-2">
+            From ₹ {room?.basePrice}/Day
+          </p>
+        </div>
+      </Link>
+    </div>
   );
 };
 

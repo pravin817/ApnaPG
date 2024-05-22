@@ -3,23 +3,16 @@ import { FaHome, FaMinusCircle, FaPlusCircle, FaSearch } from "react-icons/fa";
 import { FaHouseDamage } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getUser,
-  userLogin,
-  userLogOut,
-} from "../../redux/actions/userActions";
+import { getUser, userLogOut } from "../../redux/actions/userActions";
 
 // Import the icons
-import searchIcon from "../../assets/BasicIcon/Search.svg";
 import hamburgerMenu from "../../assets/BasicIcon/HamburgerMenu.svg";
 import userProfile from "../../assets/BasicIcon/UserProfile.png";
-import house from "../../assets/BasicIcon/houseWhite.png";
 import { IoIosCloseCircle } from "react-icons/io";
 
 import AuthenticationPopUp from "../PopUp/authentication/AuthenticationPopUp";
 import DashboardMenu from "./DashboardMenu";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { DateRange } from "react-date-range";
 import { Country, State, City } from "country-state-city";
 
@@ -65,11 +58,9 @@ const Navbar = () => {
     setSelectedDates([date.selection]);
   };
 
-  const [totalGuest, setTotalGuest] = useState(1);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [popup, setPopup] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showExtendedSearch, setShowExtendedSearch] = useState(true);
   const [hideSmallSearch, setHideSmallSearch] = useState(true);
 
   const [city, setCity] = useState("");
@@ -371,9 +362,6 @@ const Navbar = () => {
                     <Link
                       onClick={() => {
                         handleLogOut();
-
-                        // Reload the page to avoid the UX issues
-                        // window.reload();
                       }}
                     >
                       Log Out

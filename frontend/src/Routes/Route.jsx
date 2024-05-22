@@ -548,6 +548,7 @@ import VerificationRoutes from "../utils/VerificationRoutes";
 import BecomeHostRoutes from "../utils/BecomeHostRoutes";
 import DashboardRoutes from "../utils/DashboardRoutes";
 import SearchRoom from "../Pages/SearchRoom";
+import VerifyUsersDocuments from "../Pages/admin/VerifyUsersDocuments";
 // import ProtectedRoute from "../utils/ProtectedRoute";
 // import ProtectedRoute from "../Components/ProtectedRoute";
 
@@ -633,6 +634,11 @@ const router = createBrowserRouter([
       {
         path: "/host/rooms",
         element: <HostYourRoom />,
+        // element: <ProtectedRoute component={HostYourRoom} />,
+      },
+      {
+        path: "/admin/verify-documents",
+        element: <VerifyUsersDocuments />,
         // element: <ProtectedRoute component={HostYourRoom} />,
       },
       {
