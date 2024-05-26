@@ -75,7 +75,7 @@ const ListingRoomFinalStepLegal = () => {
           </div>
           <div className="flex flex-row justify-between items-center">
             <label htmlFor="checkbox2" className=" cursor-pointer">
-              Security Compound Wall
+              Security Guard
             </label>
             <input
               type="checkbox"

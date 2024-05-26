@@ -113,23 +113,23 @@ const Listing = ({ searchParamsObj }) => {
               {guestCount}
             </p>
           </span>
-          <hr className="w-full h-[1.3px] bg-[#dddddd] my-2" />
+          {/* <hr className="w-full h-[1.3px] bg-[#dddddd] my-2" /> */}
 
-          <span className="flex flex-row items-center justify-between text-base text-[#222]">
+          {/* <span className="flex flex-row items-center justify-between text-base text-[#222]">
             <p>Total without tax : </p>
             <p className="flex items-center">
               <PiCurrencyInrBold />
               {totalWithoutTax}
             </p>
-          </span>
+          </span> */}
 
-          <span className="flex flex-row items-center justify-between text-base text-[#222]">
+          {/* <span className="flex flex-row items-center justify-between text-base text-[#222]">
             <p>Taxes</p>
             <p className="flex items-center">
               <PiCurrencyInrBold />
               {tax}
             </p>
-          </span>
+          </span> */}
         </div>
 
         <hr className="w-full h-[1.3px] bg-[#dddddd] my-6" />
@@ -138,7 +138,9 @@ const Listing = ({ searchParamsObj }) => {
           <p>Total(INR)</p>
           <p className="flex items-center">
             <PiCurrencyInrBold />
-            {totalPrice}
+            {/* {totalPrice}
+            {totalPrice} */}
+            {totalWithoutTax}
           </p>
         </div>
       </div>

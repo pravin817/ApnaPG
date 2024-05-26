@@ -367,6 +367,8 @@ const SearchRoom = () => {
       </div>
 
       <div className="w-full md:w-3/4 p-4">
+        <h2 className="text-xl mb-4 font-semibold">Search Results</h2>
+
         {isLoading ? (
           <>
             <SkeletonRoomCard />
@@ -399,9 +401,6 @@ const RoomCard = ({ room }) => {
 
   return (
     <div className="mb-6 bg-white shadow-md rounded-lg overflow-hidden transition-transform transform duration-300 ease-in-out">
-
-      <h2 className="text-xl mb-4 font-semibold">Search Results</h2>
-
       <Link
         to={`/rooms/${room?._id}`}
         className="block md:flex md:items-start p-4 border rounded hover:shadow-lg transition"

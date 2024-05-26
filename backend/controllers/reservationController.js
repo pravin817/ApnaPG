@@ -196,7 +196,7 @@ const cancelReservation = async (req, res) => {
       });
     }
 
-    reservation.status = "canceled";
+    reservation.status = "cancelled";
     await reservation.save();
 
     res.status(200).json({
@@ -296,6 +296,8 @@ const getUsersBooking = async (req, res) => {
     // Find bookings by user ID
     const bookings = await Reservation.find({ bookBy: userId });
 
+    console.log("The bookings are: ", bookings);
+
     const bookingData = [];
 
     // If there are no bookings, return 404
@@ -312,6 +314,8 @@ const getUsersBooking = async (req, res) => {
     for (let i = 0; i < len; i++) {
       const listingId = bookings[i].listingId;
       const listingDetails = await Room.findById(listingId);
+
+      console.log("The listing details are: ", listingDetails);
 
       const roomAuthor = bookings[i].authorId;
       const authorDetails = await User.findById(roomAuthor);

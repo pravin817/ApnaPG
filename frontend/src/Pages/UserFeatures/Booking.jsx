@@ -160,14 +160,15 @@ const Booking = () => {
                         Base Price
                       </th>
                       <th scope="col" className="px-6 py-4 uppercase">
-                        Total Base Price
+                        {/* Total Base Price */}
+                        Total Price
                       </th>
-                      <th scope="col" className="px-8 py-4 uppercase">
+                      {/* <th scope="col" className="px-8 py-4 uppercase">
                         Total Tax
                       </th>
                       <th scope="col" className="px-8 py-4 uppercase">
                         Total Price
-                      </th>
+                      </th> */}
                       <th scope="col" className="px-8 py-4 uppercase">
                         Action
                       </th>
@@ -267,13 +268,13 @@ const Booking = () => {
                             {booking?.totalBase}
                           </td>
                           {/* Tax*/}
-                          <td className="px-6 py-4 w-[100px]">
+                          {/* <td className="px-6 py-4 w-[100px]">
                             {booking?.totalTax}
-                          </td>
+                          </td> */}
                           {/* Total Price*/}
-                          <td className="px-6 py-4 w-[100px]">
+                          {/* <td className="px-6 py-4 w-[100px]">
                             {booking?.totalPaid}
-                          </td>
+                          </td> */}
                           {/* Action */}
                           <td className="px-1 py-1 w-[100px]">
                             <div className="flex items-center space-x-2">
@@ -334,13 +335,16 @@ const Booking = () => {
                                           No of Guests: {booking.guestNumber}
                                         </Text>
                                         <Text>
-                                          Base Price: {booking.basePrice}
+                                          Room rent per day:INR{" "}
+                                          {booking.basePrice}
                                         </Text>
-                                        <Text>Total Base: {booking.totalBase}</Text>
-                                        <Text>Total Tax: {booking.totalTax}</Text>
+                                        <Text>
+                                          Total Paid: INR {booking.totalBase}
+                                        </Text>
+                                        {/* <Text>Total Tax: {booking.totalTax}</Text>
                                         <Text>
                                           Total Price: {booking.totalPaid}
-                                        </Text>
+                                        </Text> */}
                                       </View>
                                     </Page>
                                   </Document>
@@ -362,7 +366,7 @@ const Booking = () => {
                                   loading ? "Loading..." : "Download"
                                 }
                               </PDFDownloadLink>
-                              {booking.status !== "canceled" ? (
+                              {booking.status !== "cancelled" ? (
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation();

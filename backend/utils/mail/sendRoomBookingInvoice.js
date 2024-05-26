@@ -173,9 +173,9 @@ const sendRoomBookingInvoice = async (
       <div class="container">
         <div class="total">
           <p>Base Price : <span>INR ${basePrice}</span></p>
-          <p>Total Base Price   : <span>INR ${totalBase}</span></p>
-          <p>Total Tax     : <span>INR ${totalTax}</span></p>
-          <p>Total      : <span>INR ${totalPaid}</span></p>
+          <p>Guest count   : <span>${guestNumber}</span></p>
+          <p>Total Days Stay     : <span> ${nightStaying}</span></p>
+          <p>Total amount paid    : <span>INR ${totalBase}</span></p>
         </div>
       </div>
       <div class="container">
@@ -185,13 +185,6 @@ const sendRoomBookingInvoice = async (
             <p>Name: ${user?.name?.firstName} ${user?.name?.lastName}</p>
             <p>Email: ${user?.emailId}</p>
             <p>Phone: ${user?.mobileNo}</p>
-          </div>
-          <div class="payment-method">
-            <p><strong>PAYMENT METHOD</strong></p>
-            <p>Credit Card</p>
-            <p>Credit Card Type: Visa</p>
-            <p>Worldpay Transaction ID: <a href="#">4185939336</a></p>
-            <p><a href="#">Right of Withdrawal</a></p>
           </div>
         </div>
       </div>

@@ -74,7 +74,7 @@ const VerifyMobileNo = () => {
       setMessage(response.data.message);
 
       if (response.data.success) {
-        navigate(-1);
+        navigate(`/users/show/${userDetails._id}/verify-account`);
         window.location.reload();
       } else {
         window.location.reload();

@@ -5,14 +5,18 @@ export const reservationListItems = [
   },
   {
     id: 2,
-    name: "Completed",
+    name: "Ongoing",
   },
   {
     id: 3,
-    name: "Cancelled",
+    name: "Completed",
   },
   {
     id: 4,
+    name: "Cancelled",
+  },
+  {
+    id: 5,
     name: "All",
   },
 ];
