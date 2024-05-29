@@ -129,8 +129,7 @@ const VerifyUsersDocuments = () => {
                   <tbody>
                     {users?.map(
                       (user, index) =>
-                        !user.governmentDocumentVerification
-                          .verified && (
+                        !user.governmentDocumentVerification.verified && (
                           <tr
                             key={user._id}
                             className="border hover:bg-[#F9FAFF] hover:cursor-pointer rounded-md"
@@ -140,7 +139,7 @@ const VerifyUsersDocuments = () => {
                             <td className="px-6 py-4">{user.name.lastName}</td>
                             <td className="px-6 py-4">
                               <img
-                                src={user.profileImg}
+                                src={user?.profileImg}
                                 alt="Profile"
                                 className="w-12 h-12 rounded-full"
                               />

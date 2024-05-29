@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import backIcon from "../../assets/BasicIcon/backIcon.png";
 import { LiaPhotoVideoSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
@@ -30,6 +31,8 @@ const VerifyDoc = () => {
   const [image, setImage] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isImageUploading, setIsImageUploading] = useState(false);
+
+  const user = useSelector((state) => state.user.userDetails);
 
   const handleImageSelect = (event) => {
     const img = event.target.files[0];
@@ -83,20 +86,17 @@ const VerifyDoc = () => {
           docType: governmentDocumentDetail[id - 1].title,
         };
 
-        const res = await api.post(
-          "/auth/verify-government-document",
-          document,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const res = api.post("/auth/upload-document", document, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         console.log("The response is ", res);
         toast.success(
           "Document sent for verification. You will receive an email about the verification."
         );
+        navigate(`/users/show/${user?._id}/verify-account`);
       }
     } catch (error) {
       console.error("Error uploading image:", error);

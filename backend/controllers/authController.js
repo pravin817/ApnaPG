@@ -369,6 +369,62 @@ const verifyGovernmentId = async (req, res) => {
   }
 };
 
+const uploadGovernmentDoc = async (req, res) => {
+  console.log("Hit the upload Government doc");
+
+  try {
+    const payload = req.body;
+    console.log(payload);
+    const userId = req.user;
+
+    const image = payload.image;
+    const docType = payload.docType;
+
+    if (!userId) {
+      return res.status(400).json({
+        message: "User ID is required",
+        success: false,
+      });
+    }
+
+    if (!image || !docType) {
+      return res.status(400).json({
+        message: "Image and document URL are required",
+        success: false,
+      });
+    }
+
+    console.log("The payload is: ", req.body);
+    const userDetails = await User.findById(userId);
+
+    if (!userDetails) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    userDetails.governmentDocumentVerification = {
+      documentType: docType,
+      documentUrl: image,
+      verified: false, // Assuming the document verification status is initially false
+    };
+
+    await userDetails.save();
+
+    res.status(200).json({
+      message: "User government document uploaded successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
 // generate the OTP
 function generateOTP() {
   const digits = "0123456789";
@@ -868,5 +924,6 @@ module.exports = {
   userToHost,
   userProfileDetails,
   userProfileAbout,
+  uploadGovernmentDoc,
   getRoomsWishlist,
 };

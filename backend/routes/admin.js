@@ -2,9 +2,11 @@ const express = require("express");
 const verifyJwtToken = require("../middlewares/authMiddleware");
 const verifyAdmin = require("../middlewares/verifyAdmin");
 const { get } = require("mongoose");
-const { getUnverifiedDocuments, verifyDocuments } = require("../controllers/adminController");
+const {
+  getUnverifiedDocuments,
+  verifyDocuments,
+} = require("../controllers/adminController");
 const router = express.Router();
-
 
 router.post(
   "/unverified-documents",
@@ -13,8 +15,11 @@ router.post(
   getUnverifiedDocuments
 );
 
-router.post("/verify-document/:userId", verifyJwtToken, verifyAdmin, verifyDocuments);
-
-
+router.post(
+  "/verify-document/:userId",
+  verifyJwtToken,
+  verifyAdmin,
+  verifyDocuments
+);
 
 module.exports = router;

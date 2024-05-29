@@ -106,7 +106,7 @@ const ListingRoomFinalStepPricing = () => {
           )}
         </div>
         {/* calculations */}
-        {!showPricingTable && (
+        {/* {!showPricingTable && (
           <div className=" flex justify-center items-center cursor-pointer">
             <p
               className=" text-sm text-[#717171] flex items-center "
@@ -119,13 +119,13 @@ const ListingRoomFinalStepPricing = () => {
               <MdKeyboardArrowDown size={24} />
             </div>
           </div>
-        )}
+        )} */}
       </div>
       {/* group-open:animate-fadeIn */}
-      {showPricingTable && (
+      {/* {showPricingTable && (
         <div className=" mt-5 flex flex-col gap-4 min-w-[300px] md:min-w-[600px] mx-auto">
           <div className=" flex flex-col gap-3 px-4 py-6 rounded-xl border border-[#b0b0b0]">
-            {/* house price calculation */}
+    
             <div className=" flex flex-row justify-between items-center">
               <p className=" text-sm text-[#717171]">Base Price</p>
               <p className=" text-sm text-[#717171] flex items-center">
@@ -151,7 +151,7 @@ const ListingRoomFinalStepPricing = () => {
               </p>
             </div>
           </div>
-          {/* host earning calculation */}
+
 
           <div className=" flex flex-col gap-3 px-4 py-6 rounded-xl border border-[#b0b0b0] ">
             <div className=" flex flex-row justify-between items-center">
@@ -189,7 +189,7 @@ const ListingRoomFinalStepPricing = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

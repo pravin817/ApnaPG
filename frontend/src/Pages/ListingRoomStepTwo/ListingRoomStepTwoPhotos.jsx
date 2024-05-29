@@ -20,7 +20,7 @@ const ListingRoomStepTwoPhotos = () => {
           Add some photos of your cabin
         </h1>
         <p className="text-base md:text-lg text-[#717171]">
-          You&apos;ll need 5 photos to get started. You can add more or make
+          You&apos;ll need 3 photos to get started. You can add more or make
           changes later.
         </p>
       </div>

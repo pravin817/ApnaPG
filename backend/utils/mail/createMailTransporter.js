@@ -9,6 +9,7 @@ const createMailTransporter = () => {
     },
   });
 
+  
   return transporter;
 };
 

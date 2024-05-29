@@ -17,6 +17,7 @@ const {
   generateOtpCodeForMobile,
   generateOtpCodeForEmail,
   getRoomsWishlist,
+  uploadGovernmentDoc,
 } = require("../controllers/authController");
 const verifyJwtToken = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -24,7 +25,7 @@ const router = express.Router();
 router.post("/sign-up", signup);
 router.post("/log-in", login);
 router.post("/logout", verifyJwtToken, logOutUser);
-router.post("/verify-government-document", verifyJwtToken, verifyGovernmentId);
+router.post("/upload-document", verifyJwtToken, uploadGovernmentDoc);
 router.post("/verify-email", verifyJwtToken, verifyEmail);
 router.post("/verify-phone", verifyJwtToken, verifyPhoneNumber);
 router.post("/get-user-details", verifyJwtToken, getUserDetails);
@@ -55,5 +56,5 @@ router.post("/profile-details", verifyJwtToken, userProfileDetails);
 router.post("/profile-details-about", verifyJwtToken, userProfileAbout);
 
 // get the rooms wishlist
-router.post("/get-wishlist",verifyJwtToken,getRoomsWishlist)
+router.post("/get-wishlist", verifyJwtToken, getRoomsWishlist);
 module.exports = router;
