@@ -9,7 +9,7 @@ import {
   YAxis,
 } from "recharts";
 
-const yAxisData = (value) => `$${value}`;
+const yAxisData = (value) => `₹ ${value}`;
 
 const Charts = ({ reservations }) => {
   console.log("The reservations in the charts ", reservations);
@@ -29,25 +29,25 @@ const Charts = ({ reservations }) => {
       filteredReservations.forEach((obj) => {
         const checkInDate = new Date(obj.checkIn);
         const month = checkInDate.getMonth();
-        updatedEarnings[month] += obj.authorEarnedPrice;
+        updatedEarnings[month] += obj.totalBase;
       });
       setMonthlyEarnings(updatedEarnings);
     }
   }, [reservations]);
 
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const resultArray = months.map((month, index) => ({

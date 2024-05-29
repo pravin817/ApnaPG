@@ -3,10 +3,13 @@ import bookingIcon from "../../assets/BasicIcon/booking.png";
 import houseIcon from "../../assets/BasicIcon/wallet.png";
 import categoriesIcon from "../../assets/BasicIcon/travel.png";
 import Cards from "./Cards";
+import { useSelector } from "react-redux";
 
 const DashboardCards = ({ reservations, totalPrice }) => {
   // Calculate the total booking
   const currentDate = new Date(); // get the current Date and Time
+
+  const allListingsData = useSelector((state) => state.room.roomsData);
 
   // console.log("The current date is ", currentDate);
 
@@ -20,8 +23,8 @@ const DashboardCards = ({ reservations, totalPrice }) => {
 
   const activeBooking = activeBookingReservations?.length;
 
-  // find the author hosted house
-  const hostedHouse = reservations?.length;
+  // find the author hosted houses
+  const hostedHouse = allListingsData?.length;
 
   // Calculate the monthly price
   const calculateMonthlyEarnings = (obj, currentDate) => {
@@ -38,10 +41,14 @@ const DashboardCards = ({ reservations, totalPrice }) => {
       // Calculate the number of days between the checkIn and checkOut dates
       const numberOfDays = Math.ceil(
         (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
-      );
+      )+1;
+      // 7
+
+      console.log("The number of days ", numberOfDays);
 
       // Calculate the total price for the object for the current month
-      const totalPrice = numberOfDays + obj.authorEarnedPrice;
+      // const totalPrice = numberOfDays + obj.authorEarnedPrice;
+      const totalPrice = numberOfDays * obj.basePrice * obj.guestNumber;
 
       return totalPrice;
     }

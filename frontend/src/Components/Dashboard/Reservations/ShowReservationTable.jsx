@@ -25,6 +25,10 @@ const ShowReservationTable = ({ data, type }) => {
                     NIGHT
                   </th>
                   <th scope="col" className="px-6 py-4">
+                    BASE PRICE
+                  </th>
+
+                  <th scope="col" className="px-6 py-4">
                     EARNED
                   </th>
                   <th scope="col" className="px-6 py-4">
@@ -90,10 +94,17 @@ const ShowReservationTable = ({ data, type }) => {
                             {listing.nightStaying}
                           </p>
                         </td>
+                        {/* Base price  */}
+                        <td className=" px-6 py-4 w-[120px]">
+                          <p className="text-sm text-[#222222]">
+                            {listing.basePrice}
+                          </p>
+                        </td>
+
                         {/* Author Earned Price  */}
                         <td className=" px-6 py-4 w-[120px]">
                           <p className="text-sm text-[#222222]">
-                            {listing.authorEarnedPrice}
+                            {listing.totalBase}
                           </p>
                         </td>
 

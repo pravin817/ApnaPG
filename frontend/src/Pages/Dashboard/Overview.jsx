@@ -33,7 +33,7 @@ const Overview = () => {
 
   // calculate total price of the reservations
   const totalPrice = reservations?.reduce((acc, reservation) => {
-    return acc + reservation.authorEarnedPrice;
+    return acc + reservation.totalBase;
   }, 0);
 
   return (
